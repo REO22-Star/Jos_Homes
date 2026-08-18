@@ -1,4 +1,5 @@
 import { ShieldCheck, Upload, BadgeCheck, MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = { title: "List your property — for agents" };
 
@@ -50,12 +51,19 @@ export default function AgentsLanding() {
         ))}
       </ol>
 
-      <div className="mt-8 rounded-xl bg-emerald-600 p-5 text-white">
-        <p className="font-medium">Agent onboarding goes live in the next phase.</p>
-        <p className="mt-1 text-sm text-emerald-50">
-          Sign-up, phone OTP, document upload and the admin approval dashboard are the first
-          feature slice being built on top of this foundation.
-        </p>
+      <div className="mt-8 rounded-xl bg-emerald-600 p-5 text-white flex items-center justify-between">
+        <div>
+          <p className="font-medium">Ready to list your properties?</p>
+          <p className="mt-1 text-sm text-emerald-50">
+            Sign up now to start reaching qualified renters.
+          </p>
+        </div>
+        <Link
+          href="/sign-up"
+          className="px-6 py-2 bg-white text-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 transition whitespace-nowrap"
+        >
+          Get Started
+        </Link>
       </div>
     </div>
   );
