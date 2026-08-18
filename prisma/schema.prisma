@@ -1,0 +1,443 @@
+// Jos Rentals — property-rental marketplace schema
+// Postgres target. Geo stored as lat/lng floats (portable, Haversine-capable).
+// Optional PostGIS radius search can be layered on later via a raw-SQL migration.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum Role {
+  RENTER
+  AGENT
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum DocumentType {
+  NIN
+  CAC
+  ID_CARD
+  UTILITY_BILL
+  SELFIE
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ListingType {
+  HOUSE
+  FLAT
+  SELF_CONTAIN
+  SHOP
+  OFFICE
+  LAND
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  RENTED
+  REJECTED
+  ARCHIVED
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+enum MediaStatus {
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  PAID
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  INITIALIZED
+  SUCCESS
+  FAILED
+  ABANDONED
+}
+
+enum ReviewStatus {
+  VISIBLE
+  HIDDEN
+}
+
+enum NotificationChannel {
+  INAPP
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum ModeratedEntity {
+  AGENT
+  LISTING
+  DOCUMENT
+  REVIEW
+}
+
+// ---------------------------------------------------------------------------
+// Core identity
+// ---------------------------------------------------------------------------
+
+model User {
+  id              String     @id @default(cuid())
+  // Clerk external id when using Clerk for session; nullable for seed/test users.
+  externalId      String?    @unique
+  email           String?    @unique
+  phone           String?    @unique // E.164, e.g. +2348012345678
+  phoneVerifiedAt DateTime?
+  fullName        String?
+  role            Role       @default(RENTER)
+  status          UserStatus @default(ACTIVE)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  agentProfile   AgentProfile?
+  bookings       InspectionBooking[] @relation("RenterBookings")
+  payments       Payment[]
+  favorites      Favorite[]
+  savedSearches  SavedSearch[]
+  reviews        Review[]            @relation("RenterReviews")
+  conversations  Conversation[]      @relation("RenterConversations")
+  messages       Message[]
+  notifications  Notification[]
+
+  @@index([role])
+}
+
+model AgentProfile {
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName       String
+  cacNumber          String?
+  bio                String?
+  officeAddress      String?
+  whatsappNumber     String?
+  avatarUrl          String?
+  verificationStatus VerificationStatus @default(PENDING)
+  approvedById       String?
+  approvedAt         DateTime?
+  rejectionReason    String?
+  // denormalized aggregates
+  ratingAvg          Float              @default(0)
+  ratingCount        Int                @default(0)
+  listingCount       Int                @default(0)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  documents      VerificationDocument[]
+  listings       Listing[]
+  reviews        Review[]
+  conversations  Conversation[]         @relation("AgentConversations")
+
+  @@index([verificationStatus])
+}
+
+model VerificationDocument {
+  id             String         @id @default(cuid())
+  agentProfileId String
+  agentProfile   AgentProfile   @relation(fields: [agentProfileId], references: [id], onDelete: Cascade)
+  type           DocumentType
+  fileKey        String // private R2 object key (never public)
+  status         DocumentStatus @default(PENDING)
+  reviewedById   String?
+  note           String?
+  uploadedAt     DateTime       @default(now())
+
+  @@index([agentProfileId])
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Geography (Jos localities)
+// ---------------------------------------------------------------------------
+
+model Area {
+  id        String    @id @default(cuid())
+  name      String // e.g. "Rayfield"
+  slug      String    @unique
+  lga       String // Local Government Area, e.g. "Jos South"
+  lat       Float
+  lng       Float
+  listings  Listing[]
+
+  @@index([slug])
+}
+
+// ---------------------------------------------------------------------------
+// Listings & media
+// ---------------------------------------------------------------------------
+
+model Listing {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  agentProfileId String
+  agentProfile   AgentProfile  @relation(fields: [agentProfileId], references: [id], onDelete: Cascade)
+  areaId         String
+  area           Area          @relation(fields: [areaId], references: [id])
+
+  type        ListingType
+  title       String
+  description String        @db.Text
+  bedrooms    Int?
+  bathrooms   Int?
+  toilets     Int?
+  sizeSqm     Int?
+  furnished   Boolean       @default(false)
+  amenities   String[] // borehole, prepaid_meter, pop_ceiling, security, parking, ...
+
+  // All money stored as integer KOBO (₦1 = 100 kobo). Never floats.
+  annualRent   Int
+  agencyFee    Int  @default(0)
+  cautionFee   Int?
+  inspectionFee Int // what the platform charges to unlock contact
+
+  addressText String
+  lat         Float?
+  lng         Float?
+
+  status       ListingStatus @default(DRAFT)
+  rejectionReason String?
+  viewCount    Int           @default(0)
+  favoriteCount Int          @default(0)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  media     ListingMedia[]
+  bookings  InspectionBooking[]
+  reviews   Review[]
+  favorites Favorite[]
+  conversations Conversation[]
+
+  @@index([status, type])
+  @@index([areaId])
+  @@index([agentProfileId])
+}
+
+model ListingMedia {
+  id          String      @id @default(cuid())
+  listingId   String
+  listing     Listing     @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  kind        MediaKind
+  // For images: R2/Cloudflare Images key. For video: Cloudflare Stream uid.
+  storageKey  String
+  thumbnailUrl String?
+  blurDataUrl String? // tiny LQIP base64
+  width       Int?
+  height      Int?
+  durationSec Int?
+  order       Int         @default(0)
+  isCover     Boolean     @default(false)
+  status      MediaStatus @default(READY)
+  createdAt   DateTime    @default(now())
+
+  @@index([listingId])
+}
+
+// ---------------------------------------------------------------------------
+// Bookings & payments (inspection fee)
+// ---------------------------------------------------------------------------
+
+model InspectionBooking {
+  id               String        @id @default(cuid())
+  listingId        String
+  listing          Listing       @relation(fields: [listingId], references: [id])
+  renterId         String
+  renter           User          @relation("RenterBookings", fields: [renterId], references: [id])
+  agentProfileId   String
+  status           BookingStatus @default(PENDING_PAYMENT)
+  preferredDate    DateTime?
+  note             String?
+  contactUnlockedAt DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  payment Payment?
+
+  @@index([renterId])
+  @@index([listingId])
+  @@index([status])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique
+  booking         InspectionBooking @relation(fields: [bookingId], references: [id])
+  renterId        String
+  renter          User          @relation(fields: [renterId], references: [id])
+  provider        String        @default("PAYSTACK")
+  reference       String        @unique // server-generated idempotency key
+  amount          Int // kobo
+  currency        String        @default("NGN")
+  status          PaymentStatus @default(INITIALIZED)
+  channel         String?
+  gatewayResponse Json?
+  paidAt          DateTime?
+  verifiedAt      DateTime?
+  createdAt       DateTime      @default(now())
+
+  @@index([status])
+}
+
+// Dedupe store for Paystack webhook events (idempotency).
+model WebhookEvent {
+  id          String   @id @default(cuid())
+  provider    String   @default("PAYSTACK")
+  eventId     String // Paystack event id / reference
+  processedAt DateTime?
+  raw         Json
+  createdAt   DateTime @default(now())
+
+  @@unique([provider, eventId])
+}
+
+// ---------------------------------------------------------------------------
+// Messaging
+// ---------------------------------------------------------------------------
+
+model Conversation {
+  id             String   @id @default(cuid())
+  listingId      String?
+  listing        Listing? @relation(fields: [listingId], references: [id])
+  renterId       String
+  renter         User     @relation("RenterConversations", fields: [renterId], references: [id])
+  agentProfileId String
+  agentProfile   AgentProfile @relation("AgentConversations", fields: [agentProfileId], references: [id])
+  lastMessageAt  DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  messages Message[]
+
+  @@unique([listingId, renterId, agentProfileId])
+  @@index([renterId])
+  @@index([agentProfileId])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User     @relation(fields: [senderId], references: [id])
+  body           String   @db.Text // stored already redacted for pre-payment messages
+  redacted       Boolean  @default(false)
+  readAt         DateTime?
+  createdAt      DateTime @default(now())
+
+  @@index([conversationId])
+}
+
+// ---------------------------------------------------------------------------
+// Reviews, favorites, saved searches
+// ---------------------------------------------------------------------------
+
+model Review {
+  id             String       @id @default(cuid())
+  listingId      String?
+  listing        Listing?     @relation(fields: [listingId], references: [id])
+  agentProfileId String
+  agentProfile   AgentProfile @relation(fields: [agentProfileId], references: [id])
+  renterId       String
+  renter         User         @relation("RenterReviews", fields: [renterId], references: [id])
+  bookingId      String       @unique // only paid inspectors can review
+  rating         Int // 1..5
+  comment        String?
+  status         ReviewStatus @default(VISIBLE)
+  createdAt      DateTime     @default(now())
+
+  @@index([agentProfileId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  renterId  String
+  renter    User     @relation(fields: [renterId], references: [id], onDelete: Cascade)
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([renterId, listingId])
+}
+
+model SavedSearch {
+  id               String   @id @default(cuid())
+  renterId         String
+  renter           User     @relation(fields: [renterId], references: [id], onDelete: Cascade)
+  label            String
+  query            Json // { type, areaId, minPrice, maxPrice, bedrooms, ... }
+  notifyByWhatsApp Boolean  @default(false)
+  lastNotifiedAt   DateTime?
+  createdAt        DateTime @default(now())
+
+  @@index([renterId])
+}
+
+// ---------------------------------------------------------------------------
+// Moderation & notifications
+// ---------------------------------------------------------------------------
+
+// Immutable audit trail of admin moderation actions.
+model AuditLog {
+  id         String          @id @default(cuid())
+  entityType ModeratedEntity
+  entityId   String
+  action     String // APPROVE | REJECT | SUSPEND | HIDE | ...
+  adminId    String
+  reason     String?
+  createdAt  DateTime        @default(now())
+
+  @@index([entityType, entityId])
+}
+
+model Notification {
+  id       String              @id @default(cuid())
+  userId   String
+  user     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type     String
+  channel  NotificationChannel @default(INAPP)
+  payload  Json
+  readAt   DateTime?
+  sentAt   DateTime?
+  status   String              @default("PENDING")
+  createdAt DateTime           @default(now())
+
+  @@index([userId, readAt])
+}
