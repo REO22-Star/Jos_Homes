@@ -1,41 +1,51 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
-
-export const metadata = {
-  title: 'Sign up — JosHomes',
-};
-
-async function handleSignUp(formData: FormData) {
-  'use server';
-
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const role = formData.get('role') as string;
-
-  if (!email || !password || !role) {
-    throw new Error('Missing required fields');
-  }
-
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { role },
-      },
-    });
-
-    if (error) throw error;
-
-    // Redirect to login
-    redirect('/sign-in?message=Check your email to confirm your account');
-  } catch (error) {
-    throw new Error((error as Error).message);
-  }
-}
+import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
+  async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      const role = formData.get('role') as string;
+
+      if (!email || !password || !role) {
+        setError('Missing required fields');
+        return;
+      }
+
+      const response = await fetch('/api/auth/sign-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Sign up failed');
+        return;
+      }
+
+      router.push('/sign-in?message=Check your email to confirm your account');
+    } catch (err) {
+      setError((err as Error).message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -44,7 +54,13 @@ export default function SignUpPage() {
           <p className="text-neutral-600 mt-2">Join JosHomes today</p>
         </div>
 
-        <form action={handleSignUp} className="space-y-4">
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleSignUp} className="space-y-4">
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-neutral-700 mb-1">
@@ -56,6 +72,7 @@ export default function SignUpPage() {
               required
               className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
               placeholder="you@example.com"
+              disabled={loading}
             />
           </div>
 
@@ -70,6 +87,7 @@ export default function SignUpPage() {
               required
               className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
               placeholder="••••••••"
+              disabled={loading}
             />
           </div>
 
@@ -82,6 +100,7 @@ export default function SignUpPage() {
               name="role"
               required
               className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              disabled={loading}
             >
               <option value="">Select a role</option>
               <option value="RENTER">Home Seeker</option>
@@ -93,9 +112,10 @@ export default function SignUpPage() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700 transition"
+            disabled={loading}
+            className="w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50"
           >
-            Create Account
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
 
