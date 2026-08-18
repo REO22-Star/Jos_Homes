@@ -14,7 +14,7 @@ async function handleSignUp(formData: FormData) {
   const role = formData.get('role') as string;
 
   if (!email || !password || !role) {
-    return { error: 'Missing required fields' };
+    throw new Error('Missing required fields');
   }
 
   try {
@@ -31,7 +31,7 @@ async function handleSignUp(formData: FormData) {
     // Redirect to login
     redirect('/sign-in?message=Check your email to confirm your account');
   } catch (error) {
-    return { error: (error as Error).message };
+    throw new Error((error as Error).message);
   }
 }
 

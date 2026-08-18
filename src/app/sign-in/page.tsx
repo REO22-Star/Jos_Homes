@@ -13,7 +13,7 @@ async function handleSignIn(formData: FormData) {
   const password = formData.get('password') as string;
 
   if (!email || !password) {
-    return { error: 'Email and password required' };
+    throw new Error('Email and password required');
   }
 
   try {
@@ -36,7 +36,7 @@ async function handleSignIn(formData: FormData) {
       redirect('/');
     }
   } catch (error) {
-    return { error: (error as Error).message };
+    throw new Error((error as Error).message);
   }
 }
 
