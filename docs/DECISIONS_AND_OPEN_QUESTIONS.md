@@ -390,6 +390,26 @@ verifying RLS against a live database could not be done from the build environme
 This is the one remaining pre-pilot task; everything else runs on in-memory dev
 backends by design.
 
+## Design pass decisions
+
+### D-045 - Labelled stock photos as sample listing media
+
+Status: Confirmed (product owner, 2026-10-28)
+Decision: While no lister has uploaded photos, the fictional seed listings use
+freely licensed stock photos from Unsplash and Pexels (Unsplash License, Pexels
+License), stored in public/sample-photos. Every one is shown with a visible
+"Sample photo" label, its alt text says "(sample photo)", and lists and galleries
+state that they are stock images, not the actual property. Uploaded photos always
+take precedence, and listings without either show a layout sketch.
+Reason: Realistic listing pages during the building phase without using images
+we have no right to. Pinterest images were considered and rejected: pinning grants
+no reuse rights and the original owners usually cannot be traced.
+Consequences: Sample photos exist only in seed data (`sampleSrc`); they are never
+attached to lister records. Remove them, or keep them clearly labelled, before the
+public pilot. Credits and sources are in docs/SAMPLE_PHOTOS.md.
+Documents or code affected: src/lib/data/seed.ts, src/lib/domain/projection.ts,
+src/components/listing/MediaImage.tsx, Gallery.tsx, ListingGrid.tsx.
+
 ## Decisions to make before Milestone 2
 
 ### OQ-001 - Initial target segment

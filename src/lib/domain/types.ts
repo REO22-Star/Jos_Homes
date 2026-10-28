@@ -65,8 +65,10 @@ export interface PublicMedia {
   placeholderHue: number;
   alt: string;
   caption?: string;
-  /** Public URL of an uploaded, approved image. Absent for placeholder media. */
+  /** Public URL of an uploaded, approved image, or of a sample stock photo. */
   url?: string;
+  /** True when `url` is a stock stand-in, not a photo of this property. */
+  isSample?: boolean;
   /** Poster image URL for video (video never autoplays). */
   posterUrl?: string;
 }

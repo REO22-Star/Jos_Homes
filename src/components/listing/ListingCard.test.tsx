@@ -41,16 +41,28 @@ describe('ListingCard', () => {
     expect(screen.getByText('Move-in total NGN 1,027,500')).toBeInTheDocument();
   });
 
-  it('draws a layout sketch instead of a fake photo when none is uploaded', () => {
-    const { container } = render(<ListingCard listing={rayfield} />);
+  it('labels a stock stand-in as a sample photo', () => {
+    render(<ListingCard listing={rayfield} />);
+    expect(screen.getByText('Sample photo')).toBeVisible();
+    expect(screen.getByRole('img')).toHaveAccessibleName(/sample photo/);
+  });
+
+  it('draws a layout sketch instead of a fake photo when there are no photos', () => {
+    const { container } = render(<ListingCard listing={{ ...rayfield, media: [] }} />);
     expect(container.querySelector('svg')).not.toBeNull();
-    expect(container.querySelector('[role="img"]')).toBeNull();
+    expect(container.querySelector('img, [role="img"]')).toBeNull();
   });
 });
 
 describe('ListingGrid', () => {
-  it('explains once that sketches are not the actual property', () => {
+  it('explains once that sample photos are stock images, not the property', () => {
     render(<ListingGrid listings={[rayfield, sponsored]} />);
-    expect(screen.getAllByText(/not the actual property/)).toHaveLength(1);
+    expect(screen.getAllByText(/stock images from Unsplash and Pexels/)).toHaveLength(1);
+    expect(screen.queryByText(/sketch shows a typical layout/)).toBeNull();
+  });
+
+  it('explains sketches when a listing has no photos', () => {
+    render(<ListingGrid listings={[rayfield, { ...sponsored, media: [] }]} />);
+    expect(screen.getAllByText(/sketch shows a typical layout/)).toHaveLength(1);
   });
 });

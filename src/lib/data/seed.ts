@@ -8,7 +8,9 @@ import { nairaToMinor } from '@/lib/domain/money';
 
 /**
  * Deterministic fictional seed data for Milestone 0. No real people, no real
- * phone numbers, no real photos, and no real private addresses.
+ * phone numbers, and no real private addresses. Listing photos are licensed
+ * stock images (Unsplash, Pexels) labelled "Sample photo", never presented as
+ * the actual property; see docs/SAMPLE_PHOTOS.md.
  *
  * Time-relative fields are stored as offsets (`confirmedHoursAgo`,
  * `availableFromDaysFromNow`) and materialised against the request time in the
@@ -74,10 +76,13 @@ const josHomesInHouse: InternalLister = {
   verifications: [active('phone'), active('platform_inspection')],
 };
 
-// --- Media helper: safe generated placeholder tiles, never real photos ---
+// --- Media helper ---
+// `photo` names a licensed stock image in public/sample-photos (Unsplash or
+// Pexels, see docs/SAMPLE_PHOTOS.md). It stands in for the property and is
+// always shown labelled "Sample photo". Without one, the UI draws a sketch.
 function images(
   prefix: string,
-  items: Array<{ alt: string; hue: number }>,
+  items: Array<{ alt: string; hue: number; photo?: string }>,
   opts: { pendingLastCount?: number } = {},
 ): InternalMedia[] {
   const pendingFrom = items.length - (opts.pendingLastCount ?? 0);
@@ -86,6 +91,7 @@ function images(
     kind: 'image' as const,
     placeholderHue: item.hue,
     alt: item.alt,
+    sampleSrc: item.photo ? `/sample-photos/${item.photo}.jpg` : undefined,
     moderationState: i >= pendingFrom ? ('pending' as const) : ('approved' as const),
   }));
 }
@@ -131,10 +137,10 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: graceEstates,
     media: images('l1', [
-      { alt: 'Living room with tiled floor', hue: 205 },
-      { alt: 'Main bedroom', hue: 150 },
-      { alt: 'Fitted kitchen', hue: 35 },
-      { alt: 'Compound frontage', hue: 95 },
+      { alt: 'Living room with tiled floor', hue: 205, photo: 'living-room-ac-tv' },
+      { alt: 'Main bedroom', hue: 150, photo: 'bedroom-mosquito-net' },
+      { alt: 'Fitted kitchen', hue: 35, photo: 'kitchen-white' },
+      { alt: 'Compound frontage', hue: 95, photo: 'terrace-flats-palms' },
     ]),
     qualifiedViews7d: 24,
     inquiries7d: 6,
@@ -177,9 +183,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: danielLandlord,
     media: images('l2', [
-      { alt: 'Self-contained room', hue: 260 },
-      { alt: 'Bathroom', hue: 190 },
-      { alt: 'Building entrance', hue: 110 },
+      { alt: 'Self-contained room', hue: 260, photo: 'studio-room' },
+      { alt: 'Bathroom', hue: 190, photo: 'bathroom-sink' },
+      { alt: 'Building entrance', hue: 110, photo: 'flats-akure' },
     ]),
     qualifiedViews7d: 9,
     inquiries7d: 2,
@@ -226,9 +232,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     media: images(
       'l3',
       [
-        { alt: 'Furnished sitting area', hue: 20 },
-        { alt: 'Bedroom with wardrobe', hue: 300 },
-        { alt: 'Kitchenette', hue: 60 },
+        { alt: 'Furnished sitting area', hue: 20, photo: 'sitting-area-jos' },
+        { alt: 'Bedroom with wardrobe', hue: 300, photo: 'bedroom-wardrobe' },
+        { alt: 'Kitchenette', hue: 60, photo: 'kitchenette-gas-cooker' },
       ],
       { pendingLastCount: 1 },
     ),
@@ -276,9 +282,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: plateauHomesFirm,
     media: images('l4', [
-      { alt: 'Sitting room', hue: 210 },
-      { alt: 'Master bedroom', hue: 160 },
-      { alt: 'Compound and parking', hue: 100 },
+      { alt: 'Sitting room', hue: 210, photo: 'sitting-room-akure' },
+      { alt: 'Master bedroom', hue: 160, photo: 'bedroom-tiled-floor' },
+      { alt: 'Compound and parking', hue: 100, photo: 'bungalow-water-tanks' },
     ]),
     qualifiedViews7d: 15,
     inquiries7d: 3,
@@ -322,9 +328,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: joyCaretaker,
     media: images('l5', [
-      { alt: 'Room interior', hue: 275 },
-      { alt: 'Toilet and bath', hue: 185 },
-      { alt: 'Street view', hue: 120 },
+      { alt: 'Room interior', hue: 275, photo: 'studio-open-plan' },
+      { alt: 'Toilet and bath', hue: 185, photo: 'toilet-tiled' },
+      { alt: 'Street view', hue: 120, photo: 'street-building-jos' },
     ]),
     qualifiedViews7d: 18,
     inquiries7d: 5,
@@ -371,10 +377,10 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: josHomesInHouse,
     media: images('l6', [
-      { alt: 'Duplex frontage', hue: 220 },
-      { alt: 'Living and dining area', hue: 30 },
-      { alt: 'Master suite', hue: 330 },
-      { alt: 'Compound', hue: 105 },
+      { alt: 'Duplex frontage', hue: 220, photo: 'duplex-frontage' },
+      { alt: 'Living and dining area', hue: 30, photo: 'living-room-large' },
+      { alt: 'Master suite', hue: 330, photo: 'bedroom-master' },
+      { alt: 'Compound', hue: 105, photo: 'duplex-compound' },
     ]),
     qualifiedViews7d: 33,
     inquiries7d: 4,
@@ -418,9 +424,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: graceEstates,
     media: images('l7', [
-      { alt: 'Sitting room', hue: 240 },
-      { alt: 'Bedroom', hue: 140 },
-      { alt: 'Kitchen', hue: 50 },
+      { alt: 'Sitting room', hue: 240, photo: 'sitting-room-white-sofas' },
+      { alt: 'Bedroom', hue: 140, photo: 'bedroom-dark-wood' },
+      { alt: 'Kitchen', hue: 50, photo: 'kitchen-narrow' },
     ]),
     qualifiedViews7d: 58,
     inquiries7d: 19,
@@ -464,9 +470,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: danielLandlord,
     media: images('l8', [
-      { alt: 'Room', hue: 280 },
-      { alt: 'Bathroom', hue: 175 },
-      { alt: 'Frontage', hue: 115 },
+      { alt: 'Room', hue: 280, photo: 'studio-room' },
+      { alt: 'Bathroom', hue: 175, photo: 'toilet-mosaic' },
+      { alt: 'Frontage', hue: 115, photo: 'brick-wall-window' },
     ]),
     qualifiedViews7d: 7,
     inquiries7d: 1,
@@ -510,9 +516,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: graceEstates,
     media: images('l9', [
-      { alt: 'Sitting room', hue: 215 },
-      { alt: 'Bedroom', hue: 145 },
-      { alt: 'Compound', hue: 100 },
+      { alt: 'Sitting room', hue: 215, photo: 'sitting-room-blue-wall' },
+      { alt: 'Bedroom', hue: 145, photo: 'bedroom-tiled-floor' },
+      { alt: 'Compound', hue: 100, photo: 'terrace-flats-palms' },
     ]),
     qualifiedViews7d: 5,
     inquiries7d: 0,
@@ -556,9 +562,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: joyCaretaker,
     media: images('l10', [
-      { alt: 'Room', hue: 265 },
-      { alt: 'Bathroom', hue: 180 },
-      { alt: 'Entrance', hue: 125 },
+      { alt: 'Room', hue: 265, photo: 'studio-open-plan' },
+      { alt: 'Bathroom', hue: 180, photo: 'bathroom-sink' },
+      { alt: 'Entrance', hue: 125, photo: 'flats-akure' },
     ]),
     qualifiedViews7d: 2,
     inquiries7d: 0,
@@ -602,9 +608,9 @@ export const SEED_LISTINGS: SeedListing[] = [
     },
     lister: danielLandlord,
     media: images('l11', [
-      { alt: 'Room', hue: 250 },
-      { alt: 'Bathroom', hue: 170 },
-      { alt: 'Frontage', hue: 130 },
+      { alt: 'Room', hue: 250, photo: 'bedroom-wardrobe' },
+      { alt: 'Bathroom', hue: 170, photo: 'toilet-tiled' },
+      { alt: 'Frontage', hue: 130, photo: 'bungalow-water-tanks' },
     ]),
     qualifiedViews7d: 3,
     inquiries7d: 1,
@@ -645,7 +651,7 @@ export const SEED_LISTINGS: SeedListing[] = [
       houseRules: [],
     },
     lister: graceEstates,
-    media: images('l12', [{ alt: 'Room', hue: 200 }]),
+    media: images('l12', [{ alt: 'Room', hue: 200, photo: 'studio-room' }]),
     qualifiedViews7d: 0,
     inquiries7d: 0,
     sponsorshipLabel: null,

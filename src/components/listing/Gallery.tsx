@@ -15,7 +15,8 @@ export function Gallery({
   propertyType: PropertyType;
 }) {
   const [active, setActive] = useState(0);
-  // Only uploaded photos are shown; placeholder media is never presented as a photo.
+  // Only photos with a URL are shown (uploaded, or labelled sample stock photos);
+  // placeholder media is never presented as a photo.
   const photos = media.filter((m) => m.url);
 
   if (photos.length === 0) {
@@ -40,6 +41,11 @@ export function Gallery({
         <MediaImage media={current} ratio="16 / 10" sizes="(min-width: 960px) 620px, 100vw" />
       </div>
       {current.caption ? <p className={styles.caption}>{current.caption}</p> : null}
+      {current.isSample ? (
+        <p className={styles.caption}>
+          Sample photo: a stock image standing in until the lister adds photos of this property.
+        </p>
+      ) : null}
 
       {photos.length > 1 ? (
         <ul className={styles.thumbs} aria-label="Property photos">
@@ -52,7 +58,7 @@ export function Gallery({
                 aria-label={`Show photo ${i + 1}: ${m.alt}`}
                 onClick={() => setActive(i)}
               >
-                <MediaImage media={{ ...m, alt: '' }} ratio="1 / 1" />
+                <MediaImage media={{ ...m, alt: '' }} ratio="1 / 1" sampleLabel={false} />
               </button>
             </li>
           ))}

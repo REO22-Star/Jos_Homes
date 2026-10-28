@@ -4,6 +4,10 @@
   gap: var(--space-3);
 }
 
+.gallery {
+  max-width: 760px;
+}
+
 .main {
   border-radius: var(--radius);
   overflow: hidden;

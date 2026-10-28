@@ -69,6 +69,12 @@ export interface InternalMedia {
   moderationState: 'pending' | 'approved' | 'rejected' | 'quarantined';
   /** Object id in the PUBLIC blob store for an uploaded image. */
   objectId?: string;
+  /**
+   * Seed data only: path under /public to a licensed stock photo (Unsplash or
+   * Pexels) standing in for the property. Always shown labelled "Sample photo".
+   * See docs/SAMPLE_PHOTOS.md.
+   */
+  sampleSrc?: string;
   /** Object id of a generated poster (video). */
   posterObjectId?: string;
   mimeType?: string;

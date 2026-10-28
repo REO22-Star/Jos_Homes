@@ -42,8 +42,10 @@ export function toPublicListing(
       placeholderHue: m.placeholderHue,
       alt: m.alt,
       caption: m.caption,
-      // Approved uploaded images get a public URL; placeholder (seed) media does not.
-      url: m.objectId ? `/api/media/${m.objectId}` : undefined,
+      // Approved uploaded images get a public URL. Seed media may point at a
+      // labelled stock photo instead; otherwise it has no URL (a sketch is shown).
+      url: m.objectId ? `/api/media/${m.objectId}` : m.sampleSrc,
+      isSample: !m.objectId && Boolean(m.sampleSrc),
       posterUrl: m.posterObjectId ? `/api/media/${m.posterObjectId}` : undefined,
     }));
 

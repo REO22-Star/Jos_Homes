@@ -26,4 +26,18 @@ describe('Gallery', () => {
     expect(screen.getByRole('img', { name: 'Kitchen' })).toHaveAttribute('src', '/api/media/m2');
     expect(screen.queryByText(/not this property/)).toBeNull();
   });
+
+  it('labels a sample stock photo and says it is not this property', () => {
+    const sample: PublicMedia = {
+      ...placeholder,
+      id: 'm3',
+      url: '/sample-photos/studio-room.jpg',
+      isSample: true,
+    };
+    render(<Gallery media={[sample]} propertyType="self_contained" />);
+
+    expect(screen.getByRole('img', { name: 'Sitting room (sample photo)' })).toBeVisible();
+    expect(screen.getByText('Sample photo')).toBeVisible();
+    expect(screen.getByText(/stock image standing in/)).toBeVisible();
+  });
 });

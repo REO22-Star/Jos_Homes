@@ -24,8 +24,8 @@ function moveInLine(fees: FeeSummary): string {
   return `Move-in total ${formatNaira(fees.estimatedMoveInTotalMinor)}`;
 }
 
-/** True when the listing has an uploaded photo, not just placeholder media. */
-export function hasRealPhoto(listing: PublicListing): boolean {
+/** True when the listing has a photo to show (uploaded, or a labelled sample). */
+export function hasPhoto(listing: PublicListing): boolean {
   return Boolean(listing.media[0]?.url);
 }
 
