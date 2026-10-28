@@ -33,7 +33,7 @@ export function SearchFilters({ params }: { params: SearchParams }) {
         </Select>
       </Field>
 
-      <Field label="Property type" htmlFor="f-type">
+      <Field label="Type of home" htmlFor="f-type">
         <Select id="f-type" name="type" defaultValue={params.type ?? ''}>
           <option value="">Any type</option>
           {PROPERTY_TYPES.map((t) => (
@@ -45,7 +45,7 @@ export function SearchFilters({ params }: { params: SearchParams }) {
       </Field>
 
       <div className={styles.pair}>
-        <Field label="Min rent (NGN/yr)" htmlFor="f-min">
+        <Field label="Lowest rent per year (NGN)" htmlFor="f-min">
           <Input
             id="f-min"
             name="minRent"
@@ -56,7 +56,7 @@ export function SearchFilters({ params }: { params: SearchParams }) {
             defaultValue={params.minRent ?? ''}
           />
         </Field>
-        <Field label="Max rent (NGN/yr)" htmlFor="f-max">
+        <Field label="Highest rent per year (NGN)" htmlFor="f-max">
           <Input
             id="f-max"
             name="maxRent"

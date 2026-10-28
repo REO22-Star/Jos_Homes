@@ -103,7 +103,7 @@ export function ContactActions({
       <div className={styles.secondaryRow}>
         <form action={favAction}>
           <Button type="submit" variant="ghost" aria-pressed={currentlySaved}>
-            {currentlySaved ? '★ Saved' : '☆ Save property'}
+            {currentlySaved ? 'Saved' : 'Save property'}
           </Button>
         </form>
         <Button variant="ghost" onClick={() => setOpen('report')}>

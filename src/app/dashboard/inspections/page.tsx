@@ -32,12 +32,12 @@ export default async function InspectionsPage() {
                 <div>
                   <h3 className={styles.cardTitle}>{r.requesterName}</h3>
                   <p className={styles.role}>
-                    {r.requesterPhone} · for “{r.listingTitle}”
+                    {r.requesterPhone}, for “{r.listingTitle}”
                   </p>
                 </div>
               </div>
               <p className={styles.role}>
-                Preferred: {r.preferredDate ?? 'any date'} · {r.preferredTime ?? 'any time'}
+                Preferred: {r.preferredDate ?? 'any date'}, {r.preferredTime ?? 'any time'}
               </p>
               {r.message ? <p>{r.message}</p> : null}
               <InspectionStatusForm id={r.id} status={r.status} />

@@ -300,7 +300,9 @@ Supporting action:
 
 General:
 
-`Something went wrong while loading this page. Try again, or return to available listings.`
+`This page did not load. The server could not fetch what this page needs. This is usually temporary, so try again in a moment. If it keeps happening, browse available homes instead.`
+
+Say what happened and what to do next; do not use vague phrases such as "Something went wrong".
 
 Unavailable listing:
 

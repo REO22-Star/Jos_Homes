@@ -10,11 +10,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="container section">
-      <PageHeader
-        eyebrow="Legal"
-        title="Terms of service"
-        lead="Placeholder terms for the prototype."
-      />
+      <PageHeader title="Terms of service" lead="Placeholder terms for the prototype." />
       <Prose>
         <Alert tone="caution" title="Placeholder document">
           These terms are a placeholder for the prototype and are not legally binding. Qualified

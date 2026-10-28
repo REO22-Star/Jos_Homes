@@ -27,10 +27,7 @@ export function Header({ account }: { account: HeaderAccount | null }) {
     <header className={styles.header}>
       <div className={`container ${styles.bar}`}>
         <Link href="/" className={styles.brand} aria-label={`${siteConfig.name} home`}>
-          <span className={styles.brandMark} aria-hidden="true">
-            JH
-          </span>
-          <span className={styles.brandName}>{siteConfig.name}</span>
+          {siteConfig.name}
         </Link>
 
         <nav className={styles.desktopNav} aria-label="Primary">

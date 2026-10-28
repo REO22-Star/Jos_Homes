@@ -1,21 +1,14 @@
 .alert {
-  display: flex;
-  gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius);
-  border: 1px solid transparent;
+  border-left: 3px solid var(--border-strong);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--paper);
   font-size: 0.92rem;
-}
-
-.icon {
-  font-size: 1.05rem;
-  line-height: 1.5;
-  flex: none;
 }
 
 .title {
   margin: 0 0 2px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .body {
@@ -26,17 +19,16 @@
 }
 
 .info {
-  background: var(--surface);
-  border-color: var(--border);
+  border-left-color: var(--muted);
   color: var(--ink);
 }
 .caution {
+  border-left-color: var(--tone-caution-ink);
   background: var(--tone-caution-bg);
-  border-color: color-mix(in srgb, var(--tone-caution-ink) 30%, transparent);
   color: var(--tone-caution-ink);
 }
 .positive {
+  border-left-color: var(--tone-positive-ink);
   background: var(--tone-positive-bg);
-  border-color: color-mix(in srgb, var(--tone-positive-ink) 30%, transparent);
   color: var(--tone-positive-ink);
 }

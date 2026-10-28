@@ -1,18 +1,9 @@
 import type { ReactNode } from 'react';
 import styles from './Prose.module.css';
 
-export function PageHeader({
-  eyebrow,
-  title,
-  lead,
-}: {
-  eyebrow?: string;
-  title: string;
-  lead?: string;
-}) {
+export function PageHeader({ title, lead }: { title: string; lead?: string }) {
   return (
     <header className={styles.header}>
-      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
       <h1>{title}</h1>
       {lead ? <p className={styles.lead}>{lead}</p> : null}
     </header>

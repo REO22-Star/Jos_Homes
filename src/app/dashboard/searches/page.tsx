@@ -39,7 +39,7 @@ export default async function SearchesPage() {
                   <div>
                     <h3 className={styles.cardTitle}>{s.name}</h3>
                     <p className={styles.role}>
-                      {qs ? qs.replace(/&/g, ' · ') : 'All available homes'}
+                      {qs ? qs.replace(/&/g, ', ') : 'All available homes'}
                     </p>
                   </div>
                   <Badge tone={s.alertsEnabled ? 'positive' : 'neutral'}>

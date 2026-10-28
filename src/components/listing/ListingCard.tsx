@@ -1,66 +1,89 @@
 import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
+import { AVAILABILITY_COPY } from '@/lib/domain/availability';
 import { rentFrequencyLabel } from '@/lib/domain/fees';
 import { LISTER_TYPE_LABEL, PROPERTY_TYPE_LABEL } from '@/lib/domain/labels';
 import { formatNaira } from '@/lib/domain/money';
-import type { PublicListing } from '@/lib/domain/types';
+import type { FeeSummary, PublicListing } from '@/lib/domain/types';
+import { ConfirmationStamp } from './ConfirmationStamp';
+import { LayoutSketch } from './LayoutSketch';
 import { MediaImage } from './MediaImage';
-import { AvailabilityBadge, FreshnessBadge } from './StatusBadges';
 import styles from './ListingCard.module.css';
 
-function bedroomSummary(listing: PublicListing): string {
+function homeSummary(listing: PublicListing): string {
   const type = PROPERTY_TYPE_LABEL[listing.propertyType];
-  if (listing.bedrooms && listing.bedrooms > 0) {
-    return `${type} · ${listing.bedrooms} bed`;
+  if (listing.propertyType === 'duplex' && listing.bedrooms) {
+    return `${type}, ${listing.bedrooms} bedrooms`;
   }
   return type;
 }
 
+function moveInLine(fees: FeeSummary): string {
+  if (fees.disclosure === 'none_known') return 'No extra fees declared';
+  if (fees.disclosure === 'not_stated') return 'Other fees not stated';
+  return `Move-in total ${formatNaira(fees.estimatedMoveInTotalMinor)}`;
+}
+
+/** True when the listing has an uploaded photo, not just placeholder media. */
+export function hasRealPhoto(listing: PublicListing): boolean {
+  return Boolean(listing.media[0]?.url);
+}
+
+/**
+ * One listing as a row: photo (or layout sketch), details, then rent, move-in
+ * cost and the confirmation stamp. The whole row is clickable via the title.
+ */
 export function ListingCard({ listing }: { listing: PublicListing }) {
   const cover = listing.media[0];
   const rentLine = listing.fees.lines.find((l) => l.key === 'rent');
+  const availability = AVAILABILITY_COPY[listing.availabilityState];
 
   return (
-    <article className={styles.card}>
+    <article className={styles.row}>
       <div className={styles.cover}>
-        {cover ? (
-          <MediaImage media={cover} ratio="16 / 10" sizes="(min-width: 900px) 360px, 100vw" />
+        {cover?.url ? (
+          <MediaImage media={cover} ratio="4 / 3" sizes="(min-width: 760px) 200px, 104px" />
         ) : (
-          <div className={styles.noCover}>No photo yet</div>
+          <LayoutSketch propertyType={listing.propertyType} />
         )}
-        {listing.sponsorship ? (
-          <span className={styles.sponsored}>
-            <Badge tone="sponsored">{listing.sponsorship.label}</Badge>
-          </span>
-        ) : null}
       </div>
 
-      <div className={styles.body}>
-        <div className={styles.badges}>
-          <AvailabilityBadge state={listing.availabilityState} />
-          <FreshnessBadge freshness={listing.freshness} />
-        </div>
-
+      <div className={styles.info}>
+        {listing.sponsorship ? (
+          <p className={styles.sponsored}>
+            <Badge tone="sponsored">{listing.sponsorship.label}</Badge>
+          </p>
+        ) : null}
         <h3 className={styles.title}>
           <Link href={`/listing/${listing.slug}`} className={styles.titleLink}>
             {listing.title}
           </Link>
         </h3>
-
-        <p className={styles.area}>
-          {listing.area.name} · {listing.publicLandmark}
+        <p className={styles.place}>
+          {listing.area.name}, {listing.publicLandmark}
         </p>
+        <p className={styles.facts}>
+          <span className={styles.status} data-tone={availability.tone}>
+            {availability.label}
+          </span>{' '}
+          {homeSummary(listing)}
+        </p>
+        <p className={styles.metric}>
+          Listed by: {LISTER_TYPE_LABEL[listing.lister.listerType]}.{' '}
+          {listing.metrics.qualifiedViews7d} views in the past 7 days.
+        </p>
+      </div>
 
+      <div className={styles.money}>
         <p className={styles.rent}>
-          {rentLine ? formatNaira(rentLine.amountMinor ?? 0) : '—'}{' '}
+          <span className={styles.amount}>
+            {rentLine ? formatNaira(rentLine.amountMinor ?? 0) : 'Rent not stated'}
+          </span>{' '}
           <span className={styles.freq}>{rentFrequencyLabel(listing.fees.rentFrequency)}</span>
         </p>
-
-        <p className={styles.meta}>{bedroomSummary(listing)}</p>
-
-        <div className={styles.footer}>
-          <span className={styles.lister}>{LISTER_TYPE_LABEL[listing.lister.listerType]}</span>
-          <span className={styles.metric}>{listing.metrics.qualifiedViews7d} views · 7 days</span>
+        <p className={styles.total}>{moveInLine(listing.fees)}</p>
+        <div className={styles.stamp}>
+          <ConfirmationStamp freshness={listing.freshness} />
         </div>
       </div>
     </article>

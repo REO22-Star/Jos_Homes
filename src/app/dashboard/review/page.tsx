@@ -44,7 +44,7 @@ export default async function ReviewQueuePage({
                   {l.title}
                 </Link>
                 <p className={styles.listMeta}>
-                  {l.referenceCode} · {formatNaira(l.rentMinor)} · {l.property.areaName} · by{' '}
+                  {l.referenceCode}, {formatNaira(l.rentMinor)}, {l.property.areaName}, by{' '}
                   {l.lister.displayName}
                 </p>
               </div>

@@ -1,44 +1,51 @@
 /* JosHomes design tokens and base styles.
-   Clean, trust-forward visual language. System fonts only (no web-font
-   downloads) to stay fast on low-bandwidth mobile connections. */
+   Palette drawn from Jos: harmattan haze, granite, pine, laterite, and the
+   violet ink of an office date stamp. One self-hosted family (Public Sans,
+   loaded in layout.tsx) keeps the type consistent and the naira sign intact. */
 
 :root {
   /* Neutrals */
-  --bg: #ffffff;
-  --surface: #f6f8f7;
-  --surface-2: #eef2f0;
-  --border: #dde5e2;
-  --border-strong: #c6d2ce;
-  --ink: #14201d;
-  --muted: #56655f;
-  --muted-2: #74827c;
+  --bg: #f6f7f4; /* harmattan */
+  --paper: #ffffff;
+  --surface: #eef0ec;
+  --surface-2: #e6e9e4;
+  --border: #d6d9d3;
+  --border-strong: #b9beb7;
+  --ink: #24282b; /* granite */
+  --muted: #5f6467;
+  --muted-2: #74797b;
 
-  /* Brand: calm trust-forward teal-green */
-  --primary: #0f6e5f;
-  --primary-strong: #0b5a4e;
+  /* Brand: pine for actions */
+  --primary: #24533a;
+  --primary-strong: #1a3f2c;
   --primary-ink: #ffffff;
-  --primary-soft: #e4f1ee;
+  --primary-soft: #e3ece5;
+
+  /* Confirmation stamp ink, used only by ConfirmationStamp */
+  --stamp: #46358c;
+  /* Laterite, used only for overdue confirmation */
+  --laterite: #9e3f22;
 
   /* Semantic availability tones */
-  --tone-positive-bg: #e2f1ea;
-  --tone-positive-ink: #0b5a44;
-  --tone-neutral-bg: #eaeeec;
-  --tone-neutral-ink: #3f4c47;
-  --tone-caution-bg: #fbeede;
-  --tone-caution-ink: #8a5316;
-  --tone-closed-bg: #e9ebec;
-  --tone-closed-ink: #4b5563;
+  --tone-positive-bg: #e3ece5;
+  --tone-positive-ink: #1f4a33;
+  --tone-neutral-bg: #e6e9e4;
+  --tone-neutral-ink: #3f4447;
+  --tone-caution-bg: #f6e6dd;
+  --tone-caution-ink: #8a3a1f;
+  --tone-closed-bg: #e6e8e9;
+  --tone-closed-ink: #4b5256;
   --tone-sponsored-bg: #fdf3d3;
-  --tone-sponsored-ink: #7d6212;
+  --tone-sponsored-ink: #6f5710;
   --danger: #b42318;
 
   /* Focus */
-  --focus: #1f8f7d;
+  --focus: #46358c;
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius: 10px;
-  --radius-lg: 16px;
+  /* Radius: small and consistent */
+  --radius-sm: 3px;
+  --radius: 4px;
+  --radius-lg: 6px;
 
   /* Spacing scale */
   --space-1: 4px;
@@ -50,47 +57,50 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(16, 32, 28, 0.06);
-  --shadow: 0 4px 16px rgba(16, 32, 28, 0.08);
+  /* Shadows: reserved for overlays such as dialogs */
+  --shadow-sm: none;
+  --shadow: 0 8px 28px rgba(36, 40, 43, 0.18);
 
-  --container: 1120px;
+  --container: 1080px;
   --font-sans:
-    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji';
+    var(--font-public-sans), system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0e1614;
-    --surface: #14201d;
-    --surface-2: #1b2926;
-    --border: #2a3a35;
-    --border-strong: #35473f;
-    --ink: #ecf3f0;
-    --muted: #9fb0aa;
-    --muted-2: #82938d;
+    --bg: #1c1f21;
+    --paper: #24282b;
+    --surface: #24282b;
+    --surface-2: #2c3134;
+    --border: #3a3f42;
+    --border-strong: #4a5054;
+    --ink: #e7e8e4;
+    --muted: #a4a9ab;
+    --muted-2: #8d9294;
 
-    --primary: #35b39c;
-    --primary-strong: #2aa088;
-    --primary-ink: #06231d;
-    --primary-soft: #123028;
+    --primary: #8cc2a0;
+    --primary-strong: #a9d6b8;
+    --primary-ink: #10241a;
+    --primary-soft: #213a2b;
 
-    --tone-positive-bg: #123528;
-    --tone-positive-ink: #7fe0be;
-    --tone-neutral-bg: #22302c;
-    --tone-neutral-ink: #c3d1cb;
-    --tone-caution-bg: #3a2c17;
-    --tone-caution-ink: #f0c489;
-    --tone-closed-bg: #262b2c;
-    --tone-closed-ink: #b6c0c4;
+    --stamp: #b3a6ee;
+    --laterite: #f0a183;
+
+    --tone-positive-bg: #213a2b;
+    --tone-positive-ink: #a9d6b8;
+    --tone-neutral-bg: #2c3134;
+    --tone-neutral-ink: #c9cdcf;
+    --tone-caution-bg: #3b261d;
+    --tone-caution-ink: #f0a183;
+    --tone-closed-bg: #2c3134;
+    --tone-closed-ink: #b6bcbf;
     --tone-sponsored-bg: #33290f;
     --tone-sponsored-ink: #eccf7d;
     --danger: #f0857a;
 
-    --focus: #4fd0ba;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --focus: #b3a6ee;
+    --shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -110,7 +120,8 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -120,8 +131,8 @@ h3,
 h4 {
   line-height: 1.2;
   margin: 0 0 var(--space-3);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 h1 {
@@ -190,15 +201,6 @@ img {
 }
 .skip-link:focus {
   top: var(--space-3);
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--primary-strong);
-  margin-bottom: var(--space-2);
 }
 
 .muted {

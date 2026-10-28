@@ -10,9 +10,6 @@ interface EmptyStateProps {
 export function EmptyState({ title, description, children }: EmptyStateProps) {
   return (
     <div className={styles.empty}>
-      <span className={styles.mark} aria-hidden="true">
-        ⌂
-      </span>
       <h3 className={styles.title}>{title}</h3>
       {description ? <p className={styles.description}>{description}</p> : null}
       {children ? <div className={styles.actions}>{children}</div> : null}

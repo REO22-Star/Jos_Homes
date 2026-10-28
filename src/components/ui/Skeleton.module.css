@@ -1,21 +1,13 @@
+/* A flat placeholder block with a slow, quiet pulse (no sweeping shimmer). */
 .skeleton {
   display: block;
-  background: linear-gradient(
-    90deg,
-    var(--surface-2) 25%,
-    var(--surface) 37%,
-    var(--surface-2) 63%
-  );
-  background-size: 400% 100%;
+  background: var(--surface-2);
   border-radius: var(--radius-sm);
-  animation: shimmer 1.4s ease infinite;
+  animation: pulse 1.6s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: 0 0;
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
   }
 }

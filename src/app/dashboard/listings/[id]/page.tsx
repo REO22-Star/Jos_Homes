@@ -70,7 +70,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
   return (
     <div className="stack">
       <p>
-        <Link href="/dashboard/listings">← My listings</Link>
+        <Link href="/dashboard/listings">Back to listings</Link>
       </p>
 
       <div className={styles.head}>

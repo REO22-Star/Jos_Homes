@@ -1,7 +1,7 @@
 .footer {
   margin-top: var(--space-8);
   border-top: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--paper);
   padding-block: var(--space-6);
 }
 

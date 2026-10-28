@@ -34,14 +34,14 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ i
   return (
     <div className="stack">
       <p>
-        <Link href="/dashboard/review">← Review queue</Link>
+        <Link href="/dashboard/review">Back to review queue</Link>
       </p>
 
       <div className={styles.head}>
         <div>
           <h2 style={{ margin: 0 }}>{record.title}</h2>
           <p className={styles.role}>
-            {record.referenceCode} · by {record.lister.displayName} (
+            {record.referenceCode}, by {record.lister.displayName} (
             {LISTER_TYPE_LABEL[record.lister.listerType]})
           </p>
         </div>
@@ -54,7 +54,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ i
         <Row label="Type" value={PROPERTY_TYPE_LABEL[p.propertyType]} />
         <Row
           label="Rooms"
-          value={`${p.bedrooms ?? 0} bed · ${p.bathrooms ?? 0} bath · ${p.toilets ?? 0} toilet`}
+          value={`${p.bedrooms ?? 0} bed, ${p.bathrooms ?? 0} bath, ${p.toilets ?? 0} toilet`}
         />
         <Row label="Furnishing" value={FURNISHING_LABEL[p.furnishingState]} />
         <Row label="Rent" value={`${formatNaira(record.rentMinor)} (${record.rentFrequency})`} />
@@ -69,7 +69,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ i
         </Alert>
         <div style={{ marginTop: 'var(--space-3)' }}>
           <Row label="Private address" value={p.privateAddressLine || 'Not provided'} />
-          <Row label="Public area" value={`${p.areaName} · ${p.publicLandmark}`} />
+          <Row label="Public area" value={`${p.areaName}, ${p.publicLandmark}`} />
           <Row label="Contact phone" value={record.lister.privatePhoneE164 || 'Not provided'} />
         </div>
       </Card>
@@ -100,8 +100,8 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ i
           {record.statusHistory.map((h) => (
             <li key={h.id} className={styles.listMeta} style={{ marginTop: 0 }}>
               {h.changeType}
-              {h.newWorkflowState ? ` → ${h.newWorkflowState}` : ''}
-              {h.note ? ` — ${h.note}` : ''}
+              {h.newWorkflowState ? `, changed to ${h.newWorkflowState}` : ''}
+              {h.note ? `: ${h.note}` : ''}
             </li>
           ))}
         </ul>

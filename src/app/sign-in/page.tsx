@@ -29,7 +29,6 @@ export default async function SignInPage({
     <div className="container section">
       <div className={styles.wrap}>
         <PageHeader
-          eyebrow="Account"
           title="Sign in"
           lead="Browsing does not need an account. Sign in to manage listings."
         />
@@ -47,16 +46,16 @@ export default async function SignInPage({
               configured. Password for all of them: <code>{DEV_PASSWORD}</code>
               <ul className={styles.devList}>
                 <li>
-                  <code>grace@example.test</code> — lister
+                  <code>grace@example.test</code> (lister)
                 </li>
                 <li>
-                  <code>seeker@example.test</code> — seeker
+                  <code>seeker@example.test</code> (seeker)
                 </li>
                 <li>
-                  <code>mod@example.test</code> — moderator
+                  <code>mod@example.test</code> (moderator)
                 </li>
                 <li>
-                  <code>admin@example.test</code> — administrator
+                  <code>admin@example.test</code> (administrator)
                 </li>
               </ul>
             </Alert>

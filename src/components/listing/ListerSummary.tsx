@@ -4,24 +4,11 @@ import type { PublicLister } from '@/lib/domain/types';
 import styles from './ListerSummary.module.css';
 
 export function ListerSummary({ lister }: { lister: PublicLister }) {
-  const initials = lister.displayName
-    .replace(/\(.*?\)/g, '')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? '')
-    .join('');
-
   return (
     <div className={styles.wrap}>
-      <div className={styles.head}>
-        <span className={styles.avatar} aria-hidden="true">
-          {initials || 'JH'}
-        </span>
-        <div>
-          <p className={styles.name}>{lister.displayName}</p>
-          <p className={styles.type}>{LISTER_TYPE_LABEL[lister.listerType]}</p>
-        </div>
+      <div>
+        <p className={styles.name}>{lister.displayName}</p>
+        <p className={styles.type}>{LISTER_TYPE_LABEL[lister.listerType]}</p>
       </div>
 
       {lister.badges.length > 0 ? (

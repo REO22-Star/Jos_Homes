@@ -18,7 +18,7 @@ export default async function ReportsPage() {
       <h2 style={{ margin: 0 }}>Reports</h2>
       <p className={styles.role}>
         Reports from users. The reporter&apos;s identity is never shown to the lister. A report
-        never changes a listing on its own — any action is a deliberate decision below.
+        never changes a listing on its own. Any action is a deliberate decision below.
       </p>
 
       {reports.length === 0 ? (
@@ -34,7 +34,7 @@ export default async function ReportsPage() {
                 <div>
                   <h3 className={styles.cardTitle}>{r.reasonCode}</h3>
                   <p className={styles.role}>
-                    on “{r.listingTitle}” · {new Date(r.createdAtMs).toISOString().slice(0, 10)}
+                    on “{r.listingTitle}”, {new Date(r.createdAtMs).toISOString().slice(0, 10)}
                   </p>
                 </div>
                 <Badge tone={r.status === 'new' ? 'caution' : 'neutral'}>{r.status}</Badge>

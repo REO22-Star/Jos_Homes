@@ -28,22 +28,32 @@ export function classifyFreshness(
   return 'recent';
 }
 
-/** Whole days since confirmation, clamped at zero (never negative). */
-function wholeDaysAgo(lastConfirmedAt: Date, now: Date): number {
-  const diffMs = now.getTime() - lastConfirmedAt.getTime();
-  return Math.max(0, Math.floor(diffMs / MS_PER_DAY));
+const LAGOS_DAY = new Intl.DateTimeFormat('en-CA', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  timeZone: 'Africa/Lagos',
+});
+
+/** Calendar days between the two dates in Jos local time, clamped at zero. */
+function calendarDaysAgo(lastConfirmedAt: Date, now: Date): number {
+  const dayStart = (d: Date) => Date.parse(LAGOS_DAY.format(d));
+  return Math.max(0, Math.round((dayStart(now) - dayStart(lastConfirmedAt)) / MS_PER_DAY));
 }
 
-/** Human freshness label following docs/CONTENT_AND_COPY.md. */
+/**
+ * Human freshness label following docs/CONTENT_AND_COPY.md. "Today" and
+ * "yesterday" are calendar days in Jos time, so the label always agrees with
+ * the confirmation date shown beside it.
+ */
 export function freshnessLabel(status: FreshnessStatus, lastConfirmedAt: Date, now: Date): string {
   if (status === 'overdue' || status === 'suppressed') {
     return 'Confirmation overdue';
   }
-  const diffMs = now.getTime() - lastConfirmedAt.getTime();
-  const hours = diffMs / MS_PER_HOUR;
-  if (hours < 24) return 'Confirmed today';
-  if (hours < 48) return 'Confirmed yesterday';
-  return `Last confirmed ${wholeDaysAgo(lastConfirmedAt, now)} days ago`;
+  const days = calendarDaysAgo(lastConfirmedAt, now);
+  if (days === 0) return 'Confirmed today';
+  if (days === 1) return 'Confirmed yesterday';
+  return `Last confirmed ${days} days ago`;
 }
 
 /** Build the full freshness object attached to a public listing. */

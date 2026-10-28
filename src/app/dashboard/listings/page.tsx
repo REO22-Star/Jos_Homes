@@ -52,7 +52,7 @@ export default async function MyListingsPage({
                   {l.title}
                 </Link>
                 <p className={styles.listMeta}>
-                  {l.referenceCode} · {formatNaira(l.rentMinor)} ·{' '}
+                  {l.referenceCode}, {formatNaira(l.rentMinor)},{' '}
                   {l.property.areaName || 'Area not set'}
                 </p>
               </div>

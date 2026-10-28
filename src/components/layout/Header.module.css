@@ -2,8 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: saturate(1.2) blur(8px);
+  background: var(--paper);
   border-bottom: 1px solid var(--border);
 }
 
@@ -16,29 +15,11 @@
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
   text-decoration: none;
   color: var(--ink);
   font-weight: 800;
-}
-
-.brandMark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: var(--primary);
-  color: var(--primary-ink);
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-}
-
-.brandName {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
 }
 
 .desktopNav {
@@ -56,18 +37,17 @@
   font-size: 0.95rem;
 }
 .navLink:hover {
-  background: var(--surface-2);
+  text-decoration: underline;
 }
 .navLink[aria-current='page'] {
   color: var(--primary-strong);
-  background: var(--primary-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 .accountLink {
   margin-left: var(--space-2);
-  padding: 8px 14px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border-strong);
+  padding: 8px 12px;
   color: var(--primary-strong);
   text-decoration: none;
   font-weight: 600;
@@ -78,8 +58,7 @@
   white-space: nowrap;
 }
 .accountLink:hover {
-  border-color: var(--primary);
-  background: var(--primary-soft);
+  text-decoration: underline;
 }
 
 .menuButton {

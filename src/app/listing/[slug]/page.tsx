@@ -4,16 +4,19 @@ import { notFound } from 'next/navigation';
 import { Alert } from '@/components/ui/Alert';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
+import { ConfirmationStamp } from '@/components/listing/ConfirmationStamp';
 import { ContactActions } from '@/components/listing/ContactActions';
 import { FeeBreakdown } from '@/components/listing/FeeBreakdown';
 import { Gallery } from '@/components/listing/Gallery';
 import { ListerSummary } from '@/components/listing/ListerSummary';
 import { ListingGrid } from '@/components/listing/ListingGrid';
-import { AvailabilityBadge, FreshnessBadge } from '@/components/listing/StatusBadges';
+import { AvailabilityBadge } from '@/components/listing/StatusBadges';
 import { ViewTracker } from '@/components/listing/ViewTracker';
 import { AVAILABILITY_COPY } from '@/lib/domain/availability';
+import { rentFrequencyLabel } from '@/lib/domain/fees';
 import { formatAvailableFrom } from '@/lib/domain/format';
 import { FURNISHING_LABEL, PROPERTY_TYPE_LABEL } from '@/lib/domain/labels';
+import { formatNaira } from '@/lib/domain/money';
 import { getNow } from '@/lib/now';
 import { getCurrentUser } from '@/lib/auth/current-actor';
 import { isSaved } from '@/lib/data/seeker';
@@ -28,16 +31,25 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const listing = await getListingRepository().getBySlug(slug, getNow());
   if (!listing) return { title: 'Listing not found' };
 
-  const priceDisplay = `₦${(listing.rentMonthlyKobo / 100).toLocaleString()}`;
-  const bedroomsInfo = listing.bedrooms ? ` • ${listing.bedrooms} bed${listing.bedrooms !== 1 ? 's' : ''}` : '';
+  const rentMinor = listing.fees.lines.find((l) => l.key === 'rent')?.amountMinor ?? null;
+  const price =
+    rentMinor === null
+      ? 'Rent not stated'
+      : `${formatNaira(rentMinor)} ${rentFrequencyLabel(listing.fees.rentFrequency)}`;
+  // Flat types already state the bedroom count; only a duplex needs it spelled out.
+  const bedroomsInfo =
+    listing.propertyType === 'duplex' && listing.bedrooms
+      ? `, ${listing.bedrooms} bedroom${listing.bedrooms !== 1 ? 's' : ''}`
+      : '';
 
-  // Title/description use only public area — never the private address.
+  // Title/description use only public area — never the private address. The
+  // root layout's title template appends the site name.
   return {
-    title: `${listing.title} | ${priceDisplay}/month | JosHomes`,
-    description: `${PROPERTY_TYPE_LABEL[listing.propertyType]} in ${listing.area.name}, Jos${bedroomsInfo}. ${priceDisplay}/month. ${listing.freshness.label}. View photos and contact lister.`,
+    title: `${listing.title}, ${price}`,
+    description: `${PROPERTY_TYPE_LABEL[listing.propertyType]} in ${listing.area.name}, Jos${bedroomsInfo}. ${price}. ${listing.freshness.label}. View photos and contact the lister.`,
     openGraph: {
       title: listing.title,
-      description: `Available for rent in ${listing.area.name}, Jos. ${priceDisplay}/month.`,
+      description: `Available for rent in ${listing.area.name}, Jos. ${price}.`,
     },
   };
 }
@@ -75,15 +87,20 @@ export default async function ListingPage({ params }: { params: Promise<Params> 
       </nav>
 
       <header className={styles.header}>
-        <div className={styles.badges}>
-          <AvailabilityBadge state={listing.availabilityState} />
-          <FreshnessBadge freshness={listing.freshness} />
-          {listing.sponsorship ? <Badge tone="sponsored">{listing.sponsorship.label}</Badge> : null}
+        <div className={styles.heading}>
+          <div className={styles.badges}>
+            <AvailabilityBadge state={listing.availabilityState} />
+            {listing.sponsorship ? (
+              <Badge tone="sponsored">{listing.sponsorship.label}</Badge>
+            ) : null}
+          </div>
+          <h1>{listing.title}</h1>
+          <p className={styles.sub}>
+            {listing.area.name}, {listing.publicLandmark}
+          </p>
+          <p className={styles.ref}>Reference {listing.referenceCode}</p>
         </div>
-        <h1>{listing.title}</h1>
-        <p className={styles.sub}>
-          {listing.area.name} · {listing.publicLandmark} · Ref {listing.referenceCode}
-        </p>
+        <ConfirmationStamp freshness={listing.freshness} />
       </header>
 
       {isTaken ? (
@@ -98,7 +115,7 @@ export default async function ListingPage({ params }: { params: Promise<Params> 
       ) : null}
 
       <div className={styles.galleryWrap}>
-        <Gallery media={listing.media} />
+        <Gallery media={listing.media} propertyType={listing.propertyType} />
       </div>
 
       <div className={styles.layout}>
@@ -153,7 +170,7 @@ export default async function ListingPage({ params }: { params: Promise<Params> 
             <h2 id="location-note">Location</h2>
             <p className="muted">
               {listing.approxLocationLabel}. The exact street address is shared privately by the
-              lister after you make contact — it is never shown publicly.
+              lister after you make contact. It is never shown publicly.
             </p>
           </section>
         </div>

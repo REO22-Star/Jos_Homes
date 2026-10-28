@@ -4,15 +4,15 @@ import { Alert } from '@/components/ui/Alert';
 import { ButtonLink } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
-  title: 'List Your Rental Property | Free Listing on JosHomes',
-  description: 'Post your rental vacancy on JosHomes. Free for 30 days. Reach qualified seekers. Manage inquiries in one place. Get verified as a landlord.',
+  title: 'List a rental vacancy in Jos',
+  description:
+    'Advertise a current rental vacancy in Jos. Listings are reviewed before they appear publicly, and you keep availability up to date from your dashboard.',
 };
 
 export default function ListAPropertyPage() {
   return (
     <div className="container section">
       <PageHeader
-        eyebrow="For listers"
         title="List a vacancy in Jos"
         lead="Advertise a current vacancy, reach better-qualified seekers, and manage availability from one dashboard."
       />

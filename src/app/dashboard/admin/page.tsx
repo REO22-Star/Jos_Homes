@@ -69,7 +69,7 @@ export default async function AdminPage({
           <ul className={styles.list}>
             {overdue.map((l) => (
               <li key={l.id} className={styles.listMeta} style={{ marginTop: 0 }}>
-                {l.title} — {l.freshness.label}
+                {l.title}: {l.freshness.label}
               </li>
             ))}
           </ul>
@@ -113,9 +113,9 @@ export default async function AdminPage({
           <ul className={styles.list}>
             {audit.map((a) => (
               <li key={a.id} className={styles.listMeta} style={{ marginTop: 0 }}>
-                {a.atISO.slice(0, 19).replace('T', ' ')} · <strong>{a.action}</strong> ·{' '}
+                {a.atISO.slice(0, 19).replace('T', ' ')}, <strong>{a.action}</strong>,{' '}
                 {a.targetType}
-                {a.summary ? ` · ${a.summary}` : ''}
+                {a.summary ? `: ${a.summary}` : ''}
               </li>
             ))}
           </ul>

@@ -26,7 +26,7 @@ export function PreferencesForm({ marketingEmails }: { marketingEmails: boolean 
           id="marketingEmails"
           name="marketingEmails"
           defaultChecked={marketingEmails}
-          label="Send me occasional marketing emails about JosHomes. Operational messages — such as inspection updates and saved-search alerts — are always sent and are not affected by this setting."
+          label="Send me occasional marketing emails about JosHomes. Operational messages, such as inspection updates and saved-search alerts, are always sent and are not affected by this setting."
         />
         <Button type="submit" variant="primary" disabled={pending}>
           Save preferences

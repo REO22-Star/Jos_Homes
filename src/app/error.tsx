@@ -20,12 +20,12 @@ export default function GlobalError({
   return (
     <div className="container section">
       <EmptyState
-        title="Something went wrong while loading this page"
-        description="Try again, or return to available listings. No sensitive details are shown here."
+        title="This page did not load"
+        description="The server could not fetch what this page needs. This is usually temporary, so try again in a moment. If it keeps happening, browse available homes instead."
       >
         <Button onClick={reset}>Try again</Button>
         <ButtonLink href="/search" variant="secondary">
-          Available listings
+          Browse available homes
         </ButtonLink>
       </EmptyState>
     </div>

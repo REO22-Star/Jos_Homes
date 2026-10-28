@@ -18,7 +18,6 @@ export default async function SignUpPage() {
     <div className="container section">
       <div className={styles.wrap}>
         <PageHeader
-          eyebrow="Account"
           title="Create an account"
           lead="You do not need an account to browse. Create one to save homes or list a vacancy."
         />

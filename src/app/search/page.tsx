@@ -22,14 +22,15 @@ export async function generateMetadata({
 
   if (areaName) {
     return {
-      title: `Apartments in ${areaName}, Jos | Search Rentals | JosHomes`,
-      description: `Find available homes for rent in ${areaName}, Jos. Filter by price, bedrooms, property type. Fresh listings verified weekly.`,
+      title: `Homes for rent in ${areaName}, Jos`,
+      description: `Available homes for rent in ${areaName}, Jos. Filter by budget, bedrooms and type of home. Every listing shows when its availability was last confirmed.`,
     };
   }
 
   return {
-    title: 'Search Rental Vacancies in Jos | JosHomes',
-    description: 'Search current, recently confirmed rental vacancies across Jos, Plateau State. Filter by area, price, bedrooms, and property type.',
+    title: 'Homes for rent in Jos',
+    description:
+      'Search current, recently confirmed rental vacancies across Jos, Plateau State. Filter by area, price, bedrooms, and property type.',
   };
 }
 

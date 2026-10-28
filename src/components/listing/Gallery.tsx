@@ -1,26 +1,38 @@
 'use client';
 
 import { useState } from 'react';
-import type { PublicMedia } from '@/lib/domain/types';
+import { PROPERTY_TYPE_LABEL } from '@/lib/domain/labels';
+import type { PropertyType, PublicMedia } from '@/lib/domain/types';
+import { LayoutSketch } from './LayoutSketch';
 import { MediaImage } from './MediaImage';
 import styles from './Gallery.module.css';
 
-export function Gallery({ media }: { media: PublicMedia[] }) {
+export function Gallery({
+  media,
+  propertyType,
+}: {
+  media: PublicMedia[];
+  propertyType: PropertyType;
+}) {
   const [active, setActive] = useState(0);
+  // Only uploaded photos are shown; placeholder media is never presented as a photo.
+  const photos = media.filter((m) => m.url);
 
-  if (media.length === 0) {
+  if (photos.length === 0) {
     return (
-      <div
-        className={styles.empty}
-        role="img"
-        aria-label="No photos are available for this listing yet"
-      >
-        No photos are available yet
+      <div className={styles.empty}>
+        <div className={styles.sketch}>
+          <LayoutSketch propertyType={propertyType} />
+        </div>
+        <p className={styles.caption}>
+          No photos have been added yet. The sketch shows a typical layout for a{' '}
+          {PROPERTY_TYPE_LABEL[propertyType].toLowerCase()}, not this property.
+        </p>
       </div>
     );
   }
 
-  const current = media[active] ?? media[0]!;
+  const current = photos[active] ?? photos[0]!;
 
   return (
     <div className={styles.gallery}>
@@ -29,9 +41,9 @@ export function Gallery({ media }: { media: PublicMedia[] }) {
       </div>
       {current.caption ? <p className={styles.caption}>{current.caption}</p> : null}
 
-      {media.length > 1 ? (
+      {photos.length > 1 ? (
         <ul className={styles.thumbs} aria-label="Property photos">
-          {media.map((m, i) => (
+          {photos.map((m, i) => (
             <li key={m.id}>
               <button
                 type="button"

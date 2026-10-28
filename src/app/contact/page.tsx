@@ -11,7 +11,6 @@ export default function ContactPage() {
   return (
     <div className="container section">
       <PageHeader
-        eyebrow="Contact"
         title="Contact & complaints"
         lead="Ask a question, report a problem with the service, or raise a complaint about a listing."
       />

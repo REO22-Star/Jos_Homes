@@ -1,9 +1,18 @@
 import type { Metadata, Viewport } from 'next';
+import { Public_Sans } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getCurrentUser } from '@/lib/auth/current-actor';
 import { shouldIndex, siteConfig, siteUrl } from '@/lib/site';
 import './globals.css';
+
+// One self-hosted family. latin-ext carries the naira sign (U+20A6).
+const publicSans = Public_Sans({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '600', '800'],
+  display: 'swap',
+  variable: '--font-public-sans',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -25,7 +34,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0f6e5f',
+  themeColor: '#24533a',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -34,10 +43,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const user = await getCurrentUser();
 
   return (
-    <html lang="en">
-      {/* Browser extensions (e.g. Grammarly) inject attributes on <body> after
-          SSR; suppress the resulting hydration attribute warning for this element
-          only — it does not affect hydration of the app's own markup. */}
+    // Browser extensions (e.g. Scribe on <html>, Grammarly on <body>) inject
+    // attributes after SSR; suppress the resulting hydration attribute warning
+    // for these two elements only. It does not affect the app's own markup.
+    <html lang="en" className={publicSans.variable} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <a className="skip-link" href="#main">
           Skip to main content

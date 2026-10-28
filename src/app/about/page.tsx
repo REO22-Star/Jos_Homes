@@ -2,15 +2,15 @@ import type { Metadata } from 'next';
 import { PageHeader, Prose } from '@/components/layout/Prose';
 
 export const metadata: Metadata = {
-  title: 'About JosHomes | Fair Housing Marketplace for Jos',
-  description: 'JosHomes connects home seekers with verified landlords in Jos. Our mission: current, transparent listings. No hidden fees. Fresh inventory weekly.',
+  title: 'About',
+  description:
+    'JosHomes lists long-term rental homes in Jos, shows when each vacancy was last confirmed, and sets out the rent and fees the lister has declared.',
 };
 
 export default function AboutPage() {
   return (
     <div className="container section">
       <PageHeader
-        eyebrow="About"
         title="About JosHomes"
         lead="A current, trustworthy place to find long-term rental homes in Jos, Plateau State."
       />

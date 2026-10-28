@@ -36,8 +36,8 @@ export function SignUpForm() {
           accounts are granted by an existing administrator, never chosen here. */}
       <Field label="Account type" htmlFor="role">
         <Select id="role" name="role" defaultValue="seeker">
-          <option value="seeker">Home seeker — save and compare homes</option>
-          <option value="lister">Lister — advertise a vacancy</option>
+          <option value="seeker">Home seeker: save and compare homes</option>
+          <option value="lister">Lister: advertise a vacancy</option>
         </Select>
       </Field>
 

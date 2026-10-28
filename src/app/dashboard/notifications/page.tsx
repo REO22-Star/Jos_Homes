@@ -39,7 +39,7 @@ export default async function NotificationsPage() {
               <p style={{ margin: 0 }}>{n.body}</p>
               {n.listingSlug ? (
                 <p style={{ margin: 'var(--space-2) 0 0' }}>
-                  <Link href={`/listing/${n.listingSlug}`}>View the home →</Link>
+                  <Link href={`/listing/${n.listingSlug}`}>View the home</Link>
                 </p>
               ) : null}
             </Card>

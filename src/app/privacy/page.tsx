@@ -10,11 +10,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="container section">
-      <PageHeader
-        eyebrow="Legal"
-        title="Privacy notice"
-        lead="Placeholder privacy notice for the prototype."
-      />
+      <PageHeader title="Privacy notice" lead="Placeholder privacy notice for the prototype." />
       <Prose>
         <Alert tone="caution" title="Placeholder document">
           This notice is a placeholder for the prototype. A qualified data-protection review is

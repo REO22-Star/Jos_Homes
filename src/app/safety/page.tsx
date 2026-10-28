@@ -3,15 +3,15 @@ import { PageHeader, Prose } from '@/components/layout/Prose';
 import { Alert } from '@/components/ui/Alert';
 
 export const metadata: Metadata = {
-  title: 'Housing Safety Guide | Avoid Scams When Renting in Jos',
-  description: 'Protect yourself when searching for rentals. Red flags, verification tips, property inspection checklist, and landlord safety checks.',
+  title: 'Safety guide for renting in Jos',
+  description:
+    'Steps to protect yourself when inspecting a home and dealing with a lister in Jos: check the property and the lister’s authority, review documents and charges, and report suspicious listings.',
 };
 
 export default function SafetyPage() {
   return (
     <div className="container section">
       <PageHeader
-        eyebrow="Stay safe"
         title="Safety guide"
         lead="Use these steps to protect yourself when inspecting a home and dealing with a lister."
       />

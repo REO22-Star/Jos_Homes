@@ -29,10 +29,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <div className="container section">
       <div className={styles.head}>
         <div>
-          <p className="eyebrow">Dashboard</p>
           <h1 className={styles.title}>{user.displayName}</h1>
           <p className={styles.role}>
-            Signed in as <strong>{user.role}</strong> · {user.email}
+            Signed in as <strong>{user.role}</strong>, {user.email}
           </p>
         </div>
         <form action={signOutAction}>

@@ -34,6 +34,13 @@ describe('freshnessLabel', () => {
     expect(freshnessLabel('recent', daysAgo(4), now)).toBe('Last confirmed 4 days ago');
   });
 
+  it('counts calendar days in Jos time, not 24-hour blocks', () => {
+    // 09:00 in Jos; confirmed 10 hours earlier at 23:00 the previous evening.
+    const morning = new Date('2026-07-18T08:00:00.000Z');
+    const lastNight = new Date('2026-07-17T22:00:00.000Z');
+    expect(freshnessLabel('fresh', lastNight, morning)).toBe('Confirmed yesterday');
+  });
+
   it('reads confirmation overdue for overdue and suppressed', () => {
     expect(freshnessLabel('overdue', daysAgo(9), now)).toBe('Confirmation overdue');
     expect(freshnessLabel('suppressed', daysAgo(20), now)).toBe('Confirmation overdue');

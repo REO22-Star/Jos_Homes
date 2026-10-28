@@ -3,22 +3,22 @@ import { PageHeader, Prose } from '@/components/layout/Prose';
 import { ButtonLink } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
-  title: 'How JosHomes Works | Rental Guide for Jos',
-  description: 'Step-by-step guide to searching for rental homes and contacting listers on JosHomes. For seekers and landlords in Jos.',
+  title: 'How it works',
+  description:
+    'Step-by-step guide to searching for rental homes and contacting listers on JosHomes. For seekers and landlords in Jos.',
 };
 
 export default function HowItWorksPage() {
   return (
     <div className="container section">
       <PageHeader
-        eyebrow="Guide"
         title="How JosHomes works"
         lead="A smaller set of current, locally relevant listings is more useful than a large database of stale ones."
       />
       <Prose>
         <h2>For home seekers</h2>
         <ol>
-          <li>Search by area, budget, and property type — no account needed to browse.</li>
+          <li>Search by area, budget, and property type. You do not need an account to browse.</li>
           <li>
             Open a listing to see photos, the full cost breakdown, and when it was last confirmed.
           </li>
@@ -34,7 +34,7 @@ export default function HowItWorksPage() {
         </ol>
         <h2>What the labels mean</h2>
         <p>
-          Verification labels describe exactly what was checked — such as “Phone verified” or
+          Verification labels describe exactly what was checked, such as “Phone verified” or
           “Property access verified”. They are not a guarantee of ownership, conduct, or a
           successful transaction.
         </p>

@@ -23,7 +23,7 @@ export function Footer() {
 
         <p className={styles.disclaimer}>{siteConfig.disclaimer}</p>
         <p className={styles.meta}>
-          © {year} {siteConfig.name} (prototype). Fictional sample data — not real listings.
+          © {year} {siteConfig.name} (prototype). Fictional sample data, not real listings.
         </p>
       </div>
     </footer>
