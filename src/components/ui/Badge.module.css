@@ -1,0 +1,44 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+  flex: none;
+}
+
+.positive {
+  background: var(--tone-positive-bg);
+  color: var(--tone-positive-ink);
+}
+.neutral {
+  background: var(--tone-neutral-bg);
+  color: var(--tone-neutral-ink);
+}
+.caution {
+  background: var(--tone-caution-bg);
+  color: var(--tone-caution-ink);
+}
+.closed {
+  background: var(--tone-closed-bg);
+  color: var(--tone-closed-ink);
+}
+.sponsored {
+  background: var(--tone-sponsored-bg);
+  color: var(--tone-sponsored-ink);
+}
+.brand {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}

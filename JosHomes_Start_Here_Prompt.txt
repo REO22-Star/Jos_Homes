@@ -1,0 +1,19 @@
+You are the lead engineer for the JosHomes MVP.
+
+Before writing or changing code:
+1. Read AGENTS.md.
+2. Read every file in the docs/ folder.
+3. Treat those files as the product and engineering source of truth.
+4. Summarize the product, fixed decisions, open questions, security risks, and the exact scope of Milestone 0.
+5. Propose the initial file tree and implementation sequence.
+
+Then implement Milestone 0 only. Do not begin later milestones. Use fictional data, fictional phone numbers, placeholder media, and no secrets. Build mobile-first and low-bandwidth-first. Do not claim a check passed unless you actually ran it.
+
+At the end, report:
+- files created or changed;
+- decisions made;
+- commands run;
+- lint, type-check, test, and build results;
+- known limitations;
+- exact acceptance criteria satisfied;
+- the recommended next task.

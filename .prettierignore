@@ -1,0 +1,15 @@
+.next/
+node_modules/
+playwright-report/
+test-results/
+coverage/
+package-lock.json
+*.docx
+
+# Authored specification/prose documents — kept as written, not reformatted.
+docs/
+README.md
+AGENTS.md
+JosHomes_Master_Build_Prompt.md
+JosHomes_Start_Here_Prompt.txt
+START_HERE_PROMPT.txt

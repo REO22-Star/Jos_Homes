@@ -1,0 +1,42 @@
+.alert {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-size: 0.92rem;
+}
+
+.icon {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  flex: none;
+}
+
+.title {
+  margin: 0 0 2px;
+  font-weight: 700;
+}
+
+.body {
+  color: inherit;
+}
+.body :last-child {
+  margin-bottom: 0;
+}
+
+.info {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--ink);
+}
+.caution {
+  background: var(--tone-caution-bg);
+  border-color: color-mix(in srgb, var(--tone-caution-ink) 30%, transparent);
+  color: var(--tone-caution-ink);
+}
+.positive {
+  background: var(--tone-positive-bg);
+  border-color: color-mix(in srgb, var(--tone-positive-ink) 30%, transparent);
+  color: var(--tone-positive-ink);
+}

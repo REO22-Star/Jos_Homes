@@ -1,0 +1,38 @@
+.empty {
+  text-align: center;
+  padding: var(--space-7) var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  font-size: 1.6rem;
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  margin-bottom: var(--space-2);
+}
+
+.description {
+  color: var(--muted);
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.actions {
+  margin-top: var(--space-4);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}

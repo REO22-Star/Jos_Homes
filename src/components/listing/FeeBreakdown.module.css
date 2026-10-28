@@ -1,0 +1,68 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+}
+
+.table tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.label {
+  text-align: left;
+  font-weight: 500;
+  padding: 10px var(--space-4) 10px 0;
+  color: var(--ink);
+}
+
+.freq {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
+.amount {
+  text-align: right;
+  padding: 10px 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.notStated {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.totalRow {
+  border-bottom: none;
+}
+
+.totalLabel {
+  text-align: left;
+  padding: 14px var(--space-4) 0 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.totalAmount {
+  text-align: right;
+  padding: 14px 0 0;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--primary-strong);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}

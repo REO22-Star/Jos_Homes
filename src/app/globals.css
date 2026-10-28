@@ -1,0 +1,221 @@
+/* JosHomes design tokens and base styles.
+   Clean, trust-forward visual language. System fonts only (no web-font
+   downloads) to stay fast on low-bandwidth mobile connections. */
+
+:root {
+  /* Neutrals */
+  --bg: #ffffff;
+  --surface: #f6f8f7;
+  --surface-2: #eef2f0;
+  --border: #dde5e2;
+  --border-strong: #c6d2ce;
+  --ink: #14201d;
+  --muted: #56655f;
+  --muted-2: #74827c;
+
+  /* Brand: calm trust-forward teal-green */
+  --primary: #0f6e5f;
+  --primary-strong: #0b5a4e;
+  --primary-ink: #ffffff;
+  --primary-soft: #e4f1ee;
+
+  /* Semantic availability tones */
+  --tone-positive-bg: #e2f1ea;
+  --tone-positive-ink: #0b5a44;
+  --tone-neutral-bg: #eaeeec;
+  --tone-neutral-ink: #3f4c47;
+  --tone-caution-bg: #fbeede;
+  --tone-caution-ink: #8a5316;
+  --tone-closed-bg: #e9ebec;
+  --tone-closed-ink: #4b5563;
+  --tone-sponsored-bg: #fdf3d3;
+  --tone-sponsored-ink: #7d6212;
+  --danger: #b42318;
+
+  /* Focus */
+  --focus: #1f8f7d;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(16, 32, 28, 0.06);
+  --shadow: 0 4px 16px rgba(16, 32, 28, 0.08);
+
+  --container: 1120px;
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji';
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1614;
+    --surface: #14201d;
+    --surface-2: #1b2926;
+    --border: #2a3a35;
+    --border-strong: #35473f;
+    --ink: #ecf3f0;
+    --muted: #9fb0aa;
+    --muted-2: #82938d;
+
+    --primary: #35b39c;
+    --primary-strong: #2aa088;
+    --primary-ink: #06231d;
+    --primary-soft: #123028;
+
+    --tone-positive-bg: #123528;
+    --tone-positive-ink: #7fe0be;
+    --tone-neutral-bg: #22302c;
+    --tone-neutral-ink: #c3d1cb;
+    --tone-caution-bg: #3a2c17;
+    --tone-caution-ink: #f0c489;
+    --tone-closed-bg: #262b2c;
+    --tone-closed-ink: #b6c0c4;
+    --tone-sponsored-bg: #33290f;
+    --tone-sponsored-ink: #eccf7d;
+    --danger: #f0857a;
+
+    --focus: #4fd0ba;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.6rem);
+}
+h2 {
+  font-size: clamp(1.35rem, 1.1rem + 1.2vw, 1.8rem);
+}
+h3 {
+  font-size: 1.15rem;
+}
+
+p {
+  margin: 0 0 var(--space-4);
+}
+
+a {
+  color: var(--primary-strong);
+  text-underline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -60px;
+  z-index: 100;
+  background: var(--primary);
+  color: var(--primary-ink);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: var(--space-3);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary-strong);
+  margin-bottom: var(--space-2);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.section {
+  padding-block: var(--space-7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

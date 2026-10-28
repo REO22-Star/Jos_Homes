@@ -1,0 +1,164 @@
+.breadcrumb {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+}
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: var(--primary-strong);
+  text-decoration: underline;
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.header h1 {
+  margin-bottom: var(--space-2);
+}
+
+.sub {
+  margin: 0;
+  color: var(--muted);
+}
+
+.galleryWrap {
+  margin: var(--space-4) 0 var(--space-6);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.main {
+  min-width: 0;
+}
+
+.block {
+  margin-bottom: var(--space-6);
+}
+.block:last-child {
+  margin-bottom: 0;
+}
+
+.availabilityHelper {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-2);
+}
+.spec dt {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.spec dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.rules {
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--ink);
+}
+.rules li {
+  margin-bottom: var(--space-1);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sideCard {
+  padding: var(--space-4);
+}
+
+.sideHeading {
+  margin: 0 0 var(--space-3);
+  font-size: 1.05rem;
+}
+
+.metric {
+  margin: 0 0 var(--space-2);
+}
+.metric strong {
+  font-size: 1.2rem;
+  color: var(--primary-strong);
+}
+
+.metricHelp {
+  margin: var(--space-2) 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.similar {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+.similar h2 {
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 480px) {
+  .specs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr 360px;
+  }
+  .sidebar {
+    position: sticky;
+    top: 80px;
+  }
+}
