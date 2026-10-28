@@ -115,4 +115,10 @@ describe('search param round-trip (acceptance A2)', () => {
     const parsed = parseSearchParams({ type: 'castle', sort: 'random', minRent: 'abc' });
     expect(parsed).toEqual({});
   });
+
+  it('treats empty form fields as unset, not as zero', () => {
+    // A GET form submits untouched fields as "area=&type=&minRent=&maxRent=&beds=".
+    const parsed = parseSearchParams({ area: '', type: '', minRent: '', maxRent: ' ', beds: '' });
+    expect(parsed).toEqual({});
+  });
 });

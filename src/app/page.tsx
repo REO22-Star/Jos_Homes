@@ -78,7 +78,7 @@ export default async function HomePage() {
             </select>
           </div>
           <button type="submit" className={styles.submit}>
-            Search homes
+            Search available homes
           </button>
         </form>
 

@@ -51,7 +51,8 @@ test('a moderator can open the review queue but not administration', async ({ pa
 test('signing out clears the session', async ({ page }) => {
   await signIn(page, 'seeker@example.test');
   await page.getByRole('button', { name: 'Sign out' }).click();
-  await expect(page).toHaveURL('http://localhost:3000/');
+  // Back on the home page, whichever host and port the app is served from.
+  await expect(page).toHaveURL(/^https?:\/\/[^/]+\/$/);
   // The session is gone: the dashboard again redirects to sign-in.
   await page.goto('/dashboard');
   await expect(page).toHaveURL(/\/sign-in/);

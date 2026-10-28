@@ -12,7 +12,9 @@ const PROPERTY_TYPES: PropertyType[] = [
 const SORT_KEYS: SortKey[] = ['relevance', 'newest', 'price_asc', 'price_desc'];
 
 function toPositiveInt(value: string | undefined): number | undefined {
-  if (value === undefined) return undefined;
+  // An empty field from a GET form arrives as "" — Number("") is 0, which
+  // would silently filter to a maximum rent of zero.
+  if (value === undefined || value.trim() === '') return undefined;
   const n = Number(value);
   return Number.isFinite(n) && n >= 0 ? Math.floor(n) : undefined;
 }

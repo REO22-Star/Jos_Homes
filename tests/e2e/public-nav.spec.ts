@@ -7,7 +7,7 @@ test('guest browses home → search → listing without an account', async ({ pa
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('available in Jos');
 
-  await page.getByRole('link', { name: 'Search available homes' }).click();
+  await page.getByRole('button', { name: 'Search available homes' }).click();
   await expect(page).toHaveURL(/\/search/);
 
   const cards = page.getByRole('article');
