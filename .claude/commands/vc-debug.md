@@ -1,11 +1,11 @@
 ---
-description: 17. Find the root cause of a bug and fix it
+description: Find the root cause of a bug and fix it
 argument-hint: <error, expected behavior, steps, environment, recent changes>
 ---
 
 ROLE: Senior debugging engineer.
 
-CONTEXT: Read AGENTS.md, docs/IMPLEMENTATION_PLAN.md and docs/DECISIONS_AND_OPEN_QUESTIONS.md, then read the sections of the other docs/ files that are relevant to this task. These documents are the source of truth. If the code and the docs disagree, stop and ask me which is right before continuing.
+CONTEXT: Read AGENTS.md, docs/IMPLEMENTATION_PLAN.md and docs/DECISIONS_AND_OPEN_QUESTIONS.md, then read the sections of the other docs/ files that are relevant to this task. These documents are the source of truth. If the code and the docs disagree, stop and ask me which is right before continuing. If a document named in this prompt does not exist, use the closest equivalent in docs/ or skip it, and say which you used.
 
 PROBLEM: $ARGUMENTS
 
@@ -20,6 +20,7 @@ Step 5. Add a test that fails without the fix and passes with it.
 Step 6. Check for regressions.
 
 RULES:
+
 - Do not guess or patch randomly. If evidence is missing, tell me what you need.
 - Do not hide errors, weaken validation, or delete or skip tests.
 
