@@ -9,7 +9,7 @@ import styles from '../sign-in/auth.module.css';
 
 const initialState: AuthFormState = {};
 
-export function SignUpForm() {
+export function SignUpForm({ defaultRole = 'seeker' }: { defaultRole?: 'seeker' | 'lister' }) {
   const [state, formAction, pending] = useActionState(signUpAction, initialState);
 
   return (
@@ -35,7 +35,7 @@ export function SignUpForm() {
       {/* Only self-service roles are offered. Moderator and administrator
           accounts are granted by an existing administrator, never chosen here. */}
       <Field label="Account type" htmlFor="role">
-        <Select id="role" name="role" defaultValue="seeker">
+        <Select id="role" name="role" defaultValue={defaultRole}>
           <option value="seeker">Home seeker: save and compare homes</option>
           <option value="lister">Lister: advertise a vacancy</option>
         </Select>

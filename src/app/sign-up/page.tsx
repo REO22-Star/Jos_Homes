@@ -11,8 +11,14 @@ export const metadata: Metadata = {
   description: 'Create a JosHomes account to save homes or advertise a vacancy.',
 };
 
-export default async function SignUpPage() {
+export default async function SignUpPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ as?: string | string[] }>;
+}) {
   if (await getCurrentUser()) redirect('/dashboard');
+  // "List a property" links here with ?as=lister; anything else keeps the seeker default.
+  const defaultRole = (await searchParams).as === 'lister' ? 'lister' : 'seeker';
 
   return (
     <div className="container section">
@@ -21,7 +27,7 @@ export default async function SignUpPage() {
           title="Create an account"
           lead="You do not need an account to browse. Create one to save homes or list a vacancy."
         />
-        <SignUpForm />
+        <SignUpForm defaultRole={defaultRole} />
         <p className={styles.alt}>
           Already have an account? <Link href="/sign-in">Sign in</Link>
         </p>

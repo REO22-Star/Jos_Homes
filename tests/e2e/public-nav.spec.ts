@@ -73,3 +73,11 @@ test('sponsored listings are visibly labelled in results (A4)', async ({ page })
   await page.goto('/search');
   await expect(page.getByText('Sponsored listing').first()).toBeVisible();
 });
+
+test('"List a property" leads to sign-up with the lister account type chosen', async ({ page }) => {
+  await page.goto('/list-a-property');
+  await expect(page.getByText(/not part of this prototype/)).toHaveCount(0);
+  await page.getByRole('link', { name: 'Create a lister account' }).click();
+  await expect(page).toHaveURL(/\/sign-up\?as=lister/);
+  await expect(page.getByLabel('Account type')).toHaveValue('lister');
+});
