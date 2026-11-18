@@ -15,6 +15,9 @@ import type { AuthUser } from './types';
 export async function getCurrentUser(): Promise<AuthUser | null> {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
+  // Visitors without a session cookie never need the secret, so a missing
+  // SESSION_SECRET cannot take down public pages.
+  if (!token) return null;
   const payload = verifySessionToken(token, getSessionSecret());
   if (!payload) return null;
 
