@@ -7,9 +7,11 @@ import { shouldIndex, siteConfig, siteUrl } from '@/lib/site';
 import './globals.css';
 
 // One self-hosted family. latin-ext carries the naira sign (U+20A6).
+// Leave `weight` unset so this loads the variable font (400 to 800). Requesting
+// fixed weights makes Google Fonts return file URLs without a .woff2 extension,
+// which crashes the next/font loader at build time.
 const publicSans = Public_Sans({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '800'],
   display: 'swap',
   variable: '--font-public-sans',
 });
