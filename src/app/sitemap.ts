@@ -3,6 +3,9 @@ import { getListingRepository } from '@/lib/data';
 import { getNow } from '@/lib/now';
 import { shouldIndex, siteUrl } from '@/lib/site';
 
+// Regenerate hourly so new and expired listings show up without a redeploy.
+export const revalidate = 3600;
+
 const STATIC_PATHS = [
   '',
   '/search',
@@ -29,7 +32,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (!shouldIndex()) return staticPages;
 
-  const listings = await getListingRepository().searchAvailable({}, getNow());
+  // A data outage must not fail the build or the sitemap; fall back to the
+  // static pages and let the next revalidation pick listings up again.
+  let listings;
+  try {
+    listings = await getListingRepository().searchAvailable({}, getNow());
+  } catch (err) {
+    console.error('sitemap: could not load listings', err);
+    return staticPages;
+  }
   const listingPages: MetadataRoute.Sitemap = listings.map((l) => ({
     url: `${base}/listing/${l.slug}`,
     lastModified: new Date(l.freshness.lastConfirmedAtISO),
