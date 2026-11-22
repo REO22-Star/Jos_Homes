@@ -1,0 +1,12 @@
+/* Status line with the confirmation stamp beside it; wraps on narrow screens. */
+.statusRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.statusRow > p {
+  margin: 0;
+}

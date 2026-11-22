@@ -23,3 +23,15 @@ describe('ConfirmationStamp', () => {
     expect(screen.getByText('9 Jul')).toBeInTheDocument();
   });
 });
+
+describe('ConfirmationStamp press', () => {
+  it('plays the press only when asked, right after a reconfirm', () => {
+    const freshness = buildFreshness(now, now);
+    const { container, rerender } = render(<ConfirmationStamp freshness={freshness} />);
+    expect(container.firstElementChild?.className).not.toMatch(/pressed/);
+
+    rerender(<ConfirmationStamp freshness={freshness} pressed />);
+    expect(container.firstElementChild?.className).toMatch(/pressed/);
+    expect(screen.getByText('Confirmed today')).toBeInTheDocument();
+  });
+});

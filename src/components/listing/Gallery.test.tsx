@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { PublicMedia } from '@/lib/domain/types';
 import { Gallery } from './Gallery';
 
@@ -56,5 +56,21 @@ describe('Gallery', () => {
     expect(screen.getByRole('img', { name: 'Sitting room (sample photo)' })).toBeVisible();
     expect(screen.getByText('Sample photo')).toBeVisible();
     expect(screen.getByText(/stock image standing in/)).toBeVisible();
+  });
+});
+
+describe('Gallery photo switch', () => {
+  it('shows the first photo without a fade and fades only after a switch', () => {
+    const a: PublicMedia = { id: 'a', kind: 'image', placeholderHue: 1, url: '/a', alt: 'Kitchen' };
+    const b: PublicMedia = { id: 'b', kind: 'image', placeholderHue: 1, url: '/b', alt: 'Bedroom' };
+    render(<Gallery media={[a, b]} propertyType="mini_flat" />);
+
+    const frame = () =>
+      screen.getByRole('img', { name: /Kitchen|Bedroom/, hidden: false }).closest('div');
+    expect(frame()?.className).not.toMatch(/fadeIn/);
+
+    fireEvent.click(screen.getByRole('button', { name: /Show photo 2/ }));
+    expect(screen.getByRole('img', { name: 'Bedroom' })).toBeInTheDocument();
+    expect(frame()?.className).toMatch(/fadeIn/);
   });
 });

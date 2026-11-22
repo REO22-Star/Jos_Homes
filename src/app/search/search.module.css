@@ -77,6 +77,21 @@
   margin-top: var(--space-2);
 }
 
+/* Phones: the form settles in when the toggle opens it. It plays when [open]
+   starts matching, so not on desktop, where the panel is forced open. */
+@media (max-width: 899.98px) {
+  .filterPanel[open] > .filterBody {
+    animation: filters-in 0.2s ease-out;
+  }
+}
+
+@keyframes filters-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
 .saveSearch {
   margin-top: var(--space-6);
   padding-top: var(--space-5);

@@ -21,7 +21,8 @@ import {
   updateDraft,
   type UploadFile,
 } from '@/lib/data/authoring';
-import type { AvailabilityState } from '@/lib/domain/types';
+import type { AvailabilityState, Freshness } from '@/lib/domain/types';
+import { buildFreshness } from '@/lib/domain/freshness';
 import { toPublicListing } from '@/lib/domain/projection';
 import { notifyMatchingSavedSearches } from '@/lib/data/seeker';
 import { getNow } from '@/lib/now';
@@ -275,15 +276,21 @@ const AVAILABILITY_VALUES: AvailabilityState[] = [
   'application_pending',
 ];
 
+/** Reconfirm result. `freshness` is the new confirmation, for the dashboard stamp. */
+export interface ReconfirmState extends ListingFormState {
+  freshness?: Freshness;
+}
+
 export async function reconfirmAction(
   id: string,
-  _prev: ListingFormState,
+  _prev: ReconfirmState,
   _formData: FormData,
-): Promise<ListingFormState> {
+): Promise<ReconfirmState> {
   const user = await getCurrentUser();
   if (!user) return { error: 'Your session expired. Please sign in again.' };
+  const now = getNow();
   try {
-    const result = reconfirmAvailability(user, id, getNow());
+    const result = reconfirmAvailability(user, id, now);
     if (result === null) return { error: 'That listing no longer exists.' };
     if (!result.ok) return { error: result.error };
   } catch (e) {
@@ -292,7 +299,7 @@ export async function reconfirmAction(
   }
   revalidatePath('/search');
   revalidatePath('/dashboard/listings');
-  return { message: 'Availability reconfirmed.' };
+  return { message: 'Availability reconfirmed.', freshness: buildFreshness(now, now) };
 }
 
 export async function setAvailabilityAction(

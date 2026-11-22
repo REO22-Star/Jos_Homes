@@ -13,6 +13,8 @@ import { getMine, lastModerationNote, readinessFor } from '@/lib/data/authoring'
 import type { AuthoredRecord } from '@/lib/data/authoring-store';
 import { requireRole } from '@/lib/auth/current-actor';
 import { saveDraftAction } from '@/lib/listings/actions';
+import { buildFreshness } from '@/lib/domain/freshness';
+import { getNow } from '@/lib/now';
 import styles from '../../dashboard.module.css';
 
 export const metadata: Metadata = { title: 'Edit listing' };
@@ -102,7 +104,11 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
       {record.workflowState === 'approved' ? (
         <Card className={styles.card}>
           <h3 className={styles.cardTitle}>Availability</h3>
-          <AvailabilityControls id={id} state={record.availabilityState} />
+          <AvailabilityControls
+            id={id}
+            state={record.availabilityState}
+            freshness={buildFreshness(record.lastConfirmedAt, getNow())}
+          />
         </Card>
       ) : null}
 

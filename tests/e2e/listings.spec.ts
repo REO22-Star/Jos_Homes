@@ -25,6 +25,7 @@ test('draft → submit → moderator approve → public (D1/D2/C2 path)', async 
   await page.goto('/dashboard/listings');
   await page.getByRole('button', { name: 'Create a draft' }).click();
   await expect(page).toHaveURL(/\/dashboard\/listings\/[0-9a-f-]+$/);
+  const editUrl = page.url();
 
   await page.getByLabel('Listing title').fill(title);
   await page
@@ -81,6 +82,13 @@ test('draft → submit → moderator approve → public (D1/D2/C2 path)', async 
   const html = await pub.content();
   expect(html).not.toContain('E2E Close');
   await pub.context().close();
+
+  // --- The lister reconfirms availability and the stamp shows it (E1) ---
+  await page.goto(editUrl);
+  await page.getByRole('button', { name: 'Reconfirm availability' }).click();
+  await expect(page.getByText('Availability reconfirmed.')).toBeVisible();
+  await expect(page.locator('time').filter({ hasText: /^\d{1,2} [A-Z][a-z]{2}$/ })).toBeVisible();
+  await expect(page.getByText('Confirmed today')).toBeVisible();
 });
 
 test('a non-image upload is rejected with a message (H1)', async ({ page }) => {

@@ -15,6 +15,9 @@ export function Gallery({
   propertyType: PropertyType;
 }) {
   const [active, setActive] = useState(0);
+  // Fade only after the visitor picks a photo. The first photo must appear at
+  // once: it is the page's main image and is loaded at high priority.
+  const [switched, setSwitched] = useState(false);
   // Only photos with a URL are shown (uploaded, or labelled sample stock photos);
   // placeholder media is never presented as a photo.
   const photos = media.filter((m) => m.url);
@@ -37,7 +40,11 @@ export function Gallery({
 
   return (
     <div className={styles.gallery}>
-      <div className={styles.main}>
+      <div
+        // A new key per photo remounts the frame, so the fade replays each switch.
+        key={switched ? current.id : undefined}
+        className={switched ? `${styles.main} ${styles.fadeIn}` : styles.main}
+      >
         <MediaImage
           media={current}
           ratio="16 / 10"
@@ -61,7 +68,10 @@ export function Gallery({
                 className={styles.thumbButton}
                 aria-pressed={i === active}
                 aria-label={`Show photo ${i + 1}: ${m.alt}`}
-                onClick={() => setActive(i)}
+                onClick={() => {
+                  setActive(i);
+                  setSwitched(true);
+                }}
               >
                 <MediaImage media={{ ...m, alt: '' }} ratio="1 / 1" sampleLabel={false} />
               </button>

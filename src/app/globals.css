@@ -1,7 +1,7 @@
 /* JosHomes design tokens and base styles.
    Palette drawn from Jos: harmattan haze, granite, pine, laterite, and the
    violet ink of an office date stamp. One self-hosted family (Public Sans,
-   loaded in layout.tsx) keeps the type consistent and the naira sign intact. */
+   loaded in layout.tsx; see D-046) keeps the type consistent. */
 
 :root {
   /* Neutrals */

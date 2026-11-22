@@ -63,6 +63,7 @@ Decision: Use CSS Modules plus a global design-token stylesheet (`src/app/global
 rather than a utility CSS framework. System font stack only — no web-font downloads.
 Reason: Keeps JavaScript/CSS payloads small for low-bandwidth mobile connections
 (First Load JS is ~102-111 kB) and avoids a build-time framework dependency.
+Amended: the font rule is replaced by D-046 (one self-hosted web font).
 
 ### D-011 - Test tooling
 
@@ -409,6 +410,27 @@ attached to lister records. Remove them, or keep them clearly labelled, before t
 public pilot. Credits and sources are in docs/SAMPLE_PHOTOS.md.
 Documents or code affected: src/lib/data/seed.ts, src/lib/domain/projection.ts,
 src/components/listing/MediaImage.tsx, Gallery.tsx, ListingGrid.tsx.
+
+### D-046 - One self-hosted web font (exception to D-010)
+
+Status: Confirmed (product owner, 2026-11-22)
+Decision: Use Public Sans as the single typeface, loaded with `next/font/google`
+as one variable font (weights 400-800) and self-hosted with the build. Only the
+basic Latin file (about 27 KB) is preloaded. The latin-ext file (about 18 KB:
+Hausa ɓ ɗ ƙ, the naira sign, other accented letters) and the Vietnamese file
+(about 8 KB, which also holds some Yoruba dotted letters) are hosted too, but a
+browser downloads them only when a page contains those characters. This
+replaces D-010's "system font stack only" rule; the rest of D-010 (CSS Modules
+and tokens, no utility CSS framework) stands.
+Reason: The design pass (approved by the product owner) gave JosHomes its own
+visual identity, with one typeface on every device instead of each phone's
+default font. One preloaded 27 KB file is a small, fixed cost; the font uses
+`display: swap`, so text renders immediately in the fallback font.
+Consequences: Request the variable font (no `weight` list): fixed-weight
+requests return extensionless URLs that crash the next/font loader. If the
+fallback stack is reached (for example on the root error page), text still
+renders in a system sans-serif.
+Documents or code affected: src/app/layout.tsx, src/app/globals.css.
 
 ## Decisions to make before Milestone 2
 

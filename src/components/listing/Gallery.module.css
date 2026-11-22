@@ -12,6 +12,19 @@
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
+  /* Shown behind a photo that is still fading in or loading. */
+  background: var(--surface);
+}
+
+/* Applied only after the visitor switches photo (see Gallery.tsx). */
+.fadeIn img {
+  animation: photo-in 0.2s ease-out;
+}
+
+@keyframes photo-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .caption {

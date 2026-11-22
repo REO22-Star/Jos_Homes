@@ -129,7 +129,8 @@ for now.
 
 - **Stack:** Next.js 15 (App Router) + TypeScript, React 19 server components and
   server actions, CSS Modules with a design-token system (no CSS framework), and
-  system fonts — deliberately lean for low-bandwidth mobile connections. Zod for
+  one self-hosted font, Public Sans, with only its basic Latin file preloaded
+  (D-046) — deliberately lean for low-bandwidth mobile connections. Zod for
   server-side validation. Vitest + Testing Library for unit/component tests,
   Playwright for browser tests.
 - **Provider-abstracted backends.** Both the listing data layer and authentication

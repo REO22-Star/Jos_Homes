@@ -6,12 +6,15 @@ import { getCurrentUser } from '@/lib/auth/current-actor';
 import { shouldIndex, siteConfig, siteUrl } from '@/lib/site';
 import './globals.css';
 
-// One self-hosted family. latin-ext carries the naira sign (U+20A6).
+// One self-hosted family (D-046). `subsets` only chooses what is preloaded:
+// every subset is still self-hosted, and the browser fetches latin-ext (Hausa
+// ɓ ɗ ƙ, ₦, other accented letters) on demand via unicode-range when a page
+// actually uses one, so only the basic Latin file is preloaded on every page.
 // Leave `weight` unset so this loads the variable font (400 to 800). Requesting
 // fixed weights makes Google Fonts return file URLs without a .woff2 extension,
 // which crashes the next/font loader at build time.
 const publicSans = Public_Sans({
-  subsets: ['latin', 'latin-ext'],
+  subsets: ['latin'],
   display: 'swap',
   variable: '--font-public-sans',
 });
