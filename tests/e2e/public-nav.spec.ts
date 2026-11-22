@@ -39,6 +39,38 @@ test('filters are reflected in the URL and restored (A2)', async ({ page }) => {
   await expect(page.locator('#f-area')).toHaveValue('rayfield');
 });
 
+test('search shows results first on phones and keeps filters open on desktop', async ({
+  page,
+}, testInfo) => {
+  // Three filters that still match a seeded listing (an empty result opens the panel).
+  await page.goto('/search?area=tudun-wada&furnished=true&maxRent=2000000');
+  const toggle = page.locator('summary', { hasText: 'Filters' });
+  const areaSelect = page.getByLabel('Area');
+
+  if (testInfo.project.name === 'mobile-chrome') {
+    // Collapsed, with the number of active filters on the toggle.
+    await expect(toggle).toContainText('3 active');
+    await expect(areaSelect).toBeHidden();
+    // The first result row is visible without scrolling.
+    await expect(
+      page.getByRole('region', { name: 'Search results' }).locator('li').first(),
+    ).toBeInViewport();
+    await toggle.click();
+    await expect(areaSelect).toBeVisible();
+    await expect(areaSelect).toHaveValue('tudun-wada');
+  } else {
+    await expect(toggle).toBeHidden();
+    await expect(areaSelect).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Apply filters' })).toBeVisible();
+  }
+});
+
+test('search with no results opens the filters so the search can be widened', async ({ page }) => {
+  await page.goto('/search?minRent=999000000');
+  await expect(page.getByText('No current listings match these filters.')).toBeVisible();
+  await expect(page.getByLabel('Area')).toBeVisible();
+});
+
 test('taken listing shows the taken experience and disables contact (B4, E4)', async ({ page }) => {
   await page.goto('/listing/taken-2-bedroom-bukuru');
   await expect(page.getByText('This property is taken', { exact: true })).toBeVisible();

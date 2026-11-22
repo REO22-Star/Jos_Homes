@@ -30,7 +30,7 @@
   font-size: 1rem;
   color: var(--ink);
   background: var(--paper);
-  border: 1.5px solid var(--border);
+  border: 1.5px solid var(--border-control);
   border-radius: var(--radius);
   appearance: none;
 }

@@ -100,7 +100,7 @@ export default async function AdminPage({
               flex: 1,
               minHeight: 40,
               padding: '8px 12px',
-              border: '1px solid var(--border-strong)',
+              border: '1px solid var(--border-control)',
               borderRadius: 'var(--radius)',
               background: 'var(--bg)',
               color: 'var(--ink)',

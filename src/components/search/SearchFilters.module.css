@@ -19,6 +19,22 @@
   font-size: 1.1rem;
 }
 
+/* Below 900px the search page's "Filters" toggle already names this panel, so
+   the heading is kept for screen readers only and "Clear" sits on the right. */
+@media (max-width: 899.98px) {
+  .header {
+    justify-content: flex-end;
+  }
+  .heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+
 .pair {
   display: grid;
   grid-template-columns: 1fr 1fr;

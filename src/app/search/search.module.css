@@ -28,6 +28,66 @@
   font-weight: 600;
 }
 
+/* Mobile filter disclosure: a full-width row that opens the filter form. */
+.filterToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  background: var(--paper);
+  border: 1.5px solid var(--border-control);
+  border-radius: var(--radius);
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+}
+.filterToggle::-webkit-details-marker {
+  display: none;
+}
+.filterToggle:hover {
+  border-color: var(--muted);
+}
+
+.filterToggleLabel {
+  flex: 1;
+}
+
+.filterCount {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.92rem;
+}
+
+/* Chevron: points down when closed, up when open. */
+.filterToggle::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.filterPanel[open] > .filterToggle::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.filterBody {
+  margin-top: var(--space-2);
+}
+
+.saveSearch {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border);
+}
+
+.saveHeading {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-3);
+}
+
 @media (min-width: 900px) {
   .layout {
     grid-template-columns: 300px 1fr;
@@ -35,5 +95,20 @@
   .sidebar {
     position: sticky;
     top: 80px;
+  }
+
+  /* Desktop: always show the filters. Browsers that can style the details
+     content force it open and drop the toggle; older ones keep a working
+     toggle instead, so nothing is ever unreachable. */
+  @supports selector(::details-content) {
+    .filterPanel::details-content {
+      content-visibility: visible;
+    }
+    .filterToggle {
+      display: none;
+    }
+    .filterBody {
+      margin-top: 0;
+    }
   }
 }

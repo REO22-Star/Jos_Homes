@@ -38,7 +38,12 @@ export function Gallery({
   return (
     <div className={styles.gallery}>
       <div className={styles.main}>
-        <MediaImage media={current} ratio="16 / 10" sizes="(min-width: 960px) 620px, 100vw" />
+        <MediaImage
+          media={current}
+          ratio="16 / 10"
+          sizes="(min-width: 960px) 620px, 100vw"
+          priority
+        />
       </div>
       {current.caption ? <p className={styles.caption}>{current.caption}</p> : null}
       {current.isSample ? (

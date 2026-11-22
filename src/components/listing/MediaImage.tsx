@@ -17,12 +17,19 @@ export function MediaImage({
   className,
   sizes,
   sampleLabel = true,
+  priority = false,
 }: {
   media: PublicMedia;
   ratio?: string;
   className?: string;
   sizes?: string;
   sampleLabel?: boolean;
+  /**
+   * Set for the one image that is the page's main visual above the fold (the
+   * listing gallery's main photo): load it eagerly at high priority instead
+   * of lazily, so it is not the slowest thing on the page.
+   */
+  priority?: boolean;
 }) {
   if (media.url) {
     const img = (
@@ -30,7 +37,8 @@ export function MediaImage({
       <img
         src={media.url}
         alt={media.isSample ? `${media.alt} (sample photo)` : media.alt}
-        loading="lazy"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : undefined}
         decoding="async"
         sizes={sizes}
         className={className}

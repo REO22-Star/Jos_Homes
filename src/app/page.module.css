@@ -35,7 +35,7 @@
   font: inherit;
   color: var(--ink);
   background: var(--paper);
-  border: 1.5px solid var(--border);
+  border: 1.5px solid var(--border-control);
   border-radius: var(--radius);
 }
 .select:hover {

@@ -67,3 +67,19 @@ export function toQueryString(params: SearchParams): string {
   if (params.sort && params.sort !== 'relevance') sp.set('sort', params.sort);
   return sp.toString();
 }
+
+/**
+ * How many filters narrow the results. Sort order is not a filter, so it is
+ * not counted. Shown on the collapsed mobile filter toggle.
+ */
+export function countActiveFilters(params: SearchParams): number {
+  return [
+    params.area,
+    params.type,
+    params.minRent,
+    params.maxRent,
+    params.beds,
+    params.furnished,
+    params.directLandlord,
+  ].filter((v) => v !== undefined && v !== false).length;
+}

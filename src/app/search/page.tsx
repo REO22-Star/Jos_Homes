@@ -6,7 +6,11 @@ import { ListingGrid } from '@/components/listing/ListingGrid';
 import { SearchFilters } from '@/components/search/SearchFilters';
 import { SaveSearchForm } from '@/components/search/SaveSearchForm';
 import { getListingRepository } from '@/lib/data';
-import { parseSearchParams, type RawSearchParams } from '@/lib/data/search-params';
+import {
+  countActiveFilters,
+  parseSearchParams,
+  type RawSearchParams,
+} from '@/lib/data/search-params';
 import { areaBySlug } from '@/lib/data/areas';
 import { getNow } from '@/lib/now';
 import styles from './search.module.css';
@@ -46,23 +50,35 @@ export default async function SearchPage({
 
   const areaName = params.area ? areaBySlug(params.area)?.name : undefined;
   const heading = areaName ? `Available homes in ${areaName}` : 'Available homes in Jos';
+  const activeFilters = countActiveFilters(params);
 
   return (
     <div className="container section">
       <header className={styles.head}>
         <h1>{heading}</h1>
         <p className="muted">
-          {results.length} {results.length === 1 ? 'listing' : 'listings'} match your filters.
-          Taken, paused, and unconfirmed listings are not shown.
+          {results.length === 1 ? '1 listing matches' : `${results.length} listings match`} your
+          filters. Taken, paused, and unconfirmed listings are not shown.
         </p>
-        <div style={{ marginTop: 'var(--space-3)' }}>
-          <SaveSearchForm params={params} />
-        </div>
       </header>
 
       <div className={styles.layout}>
         <aside className={styles.sidebar} aria-label="Search filters">
-          <SearchFilters params={params} />
+          {/* On phones the filters collapse behind this toggle so results come
+              first. Native <details> keeps it working without JavaScript (A2).
+              From 900px the CSS forces it open and hides the toggle. With no
+              results it starts open, so widening the search is one step. */}
+          <details className={styles.filterPanel} open={results.length === 0}>
+            <summary className={styles.filterToggle}>
+              <span className={styles.filterToggleLabel}>Filters</span>
+              <span className={styles.filterCount}>
+                {activeFilters > 0 ? `${activeFilters} active` : 'None set'}
+              </span>
+            </summary>
+            <div className={styles.filterBody}>
+              <SearchFilters params={params} />
+            </div>
+          </details>
         </aside>
 
         <section className={styles.results} aria-label="Search results" aria-live="polite">
@@ -87,6 +103,10 @@ export default async function SearchPage({
               </Link>
             </EmptyState>
           )}
+          <div className={styles.saveSearch}>
+            <h2 className={styles.saveHeading}>Save this search</h2>
+            <SaveSearchForm params={params} />
+          </div>
         </section>
       </div>
     </div>

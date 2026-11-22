@@ -27,6 +27,23 @@ describe('Gallery', () => {
     expect(screen.queryByText(/not this property/)).toBeNull();
   });
 
+  it('loads the main photo eagerly at high priority and keeps thumbnails lazy', () => {
+    const a: PublicMedia = { ...placeholder, id: 'a', url: '/api/media/a', alt: 'Kitchen' };
+    const b: PublicMedia = { ...placeholder, id: 'b', url: '/api/media/b', alt: 'Bedroom' };
+    const { container } = render(<Gallery media={[a, b]} propertyType="mini_flat" />);
+
+    const main = screen.getByRole('img', { name: 'Kitchen' });
+    expect(main).toHaveAttribute('loading', 'eager');
+    expect(main).toHaveAttribute('fetchpriority', 'high');
+
+    const thumbs = container.querySelectorAll('ul img');
+    expect(thumbs).toHaveLength(2);
+    thumbs.forEach((t) => {
+      expect(t).toHaveAttribute('loading', 'lazy');
+      expect(t).not.toHaveAttribute('fetchpriority');
+    });
+  });
+
   it('labels a sample stock photo and says it is not this property', () => {
     const sample: PublicMedia = {
       ...placeholder,
