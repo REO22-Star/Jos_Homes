@@ -16,7 +16,7 @@
 /* On phones a long label wraps to two lines so the stamp stays narrow. */
 .label {
   max-width: 8.5em;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-align: center;
   white-space: normal;

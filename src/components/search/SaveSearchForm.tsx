@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 import { Alert } from '@/components/ui/Alert';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Form';
+import { Field, Input } from '@/components/ui/Form';
 import { saveSearchAction, type SeekerState } from '@/lib/seeker/actions';
 import type { SearchParams } from '@/lib/data/types';
 
@@ -31,11 +31,9 @@ export function SaveSearchForm({ params }: { params: SearchParams }) {
       {params.sort ? <input type="hidden" name="sort" value={params.sort} /> : null}
 
       <div style={{ flex: 1, minWidth: 180 }}>
-        <Input
-          name="name"
-          placeholder="Name this search (e.g. Rayfield 2-bed)"
-          aria-label="Search name"
-        />
+        <Field label="Search name" htmlFor="save-search-name">
+          <Input id="save-search-name" name="name" placeholder="e.g. Rayfield 2-bed" />
+        </Field>
       </div>
       <Button type="submit" variant="secondary" disabled={pending}>
         Save search

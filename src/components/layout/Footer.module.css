@@ -24,13 +24,17 @@
   max-width: 40ch;
 }
 
+/* Phones: a two-column grid of full-height tap targets (44px). */
 .links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--space-4);
 }
 
 .link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--ink);
   text-decoration: none;
   font-weight: 600;
@@ -59,5 +63,14 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
+  }
+  /* Pointer devices: one wrapping row, still above the 24px target minimum. */
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-4);
+  }
+  .link {
+    min-height: 32px;
   }
 }

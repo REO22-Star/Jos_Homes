@@ -3,7 +3,10 @@ import { Skeleton } from '@/components/ui/Skeleton';
 /** Placeholder shaped like the listing rows that usually follow. */
 export default function Loading() {
   return (
-    <div className="container section" aria-busy="true" aria-label="Loading">
+    <div className="container section" aria-busy="true">
+      <p role="status" className="sr-only">
+        Loading…
+      </p>
       <Skeleton width="60%" height="2.2rem" />
       <div style={{ height: 'var(--space-5)' }} />
       <div style={{ display: 'grid', gap: 'var(--space-5)' }}>

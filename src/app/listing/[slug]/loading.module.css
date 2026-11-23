@@ -1,0 +1,38 @@
+/* Mirrors listing.module.css so the real page replaces this without shifting. */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.heading {
+  flex: 1 1 32ch;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.gallery {
+  max-width: 760px;
+  aspect-ratio: 16 / 10;
+  margin: var(--space-4) 0 var(--space-6);
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.lines {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr 360px;
+  }
+}
