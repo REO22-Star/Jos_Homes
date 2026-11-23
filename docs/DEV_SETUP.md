@@ -52,7 +52,9 @@ Notes:
 
 - `npm run e2e` requires the Playwright browser once: `npx playwright install chromium`.
   Its web server runs `npm run start`, so run `npm run build` first (or let a prior
-  build be reused).
+  build be reused). It serves on port 3100 (override with `E2E_PORT`), not 3000,
+  so another app on 3000 can't be tested by mistake. If a server is already on
+  that port locally, Playwright reuses it, so make sure it's JosHomes.
 - All money is stored as integer minor units (kobo). All freshness/availability is
   computed against the current server time via `src/lib/now.ts`.
 

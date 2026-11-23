@@ -3,7 +3,14 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Browser tests for critical public journeys (Milestone 0: public navigation).
  * Runs against a production build so tests reflect what ships.
+ *
+ * The tests use their own port (3100, or E2E_PORT) rather than Next's default
+ * 3000, so a different app already running on 3000 is never mistaken for
+ * JosHomes and tested instead.
  */
+const port = Number(process.env.E2E_PORT) || 3100;
+const baseURL = `http://localhost:${port}`;
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -11,7 +18,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'line' : [['list']],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL,
     trace: 'on-first-retry',
   },
   projects: [
@@ -25,8 +32,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run start',
-    url: 'http://localhost:3000',
+    command: `npm run start -- -p ${port}`,
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     // The production build has NODE_ENV=production, where mock auth is off by
