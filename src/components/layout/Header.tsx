@@ -53,7 +53,17 @@ export function Header({ account }: { account: HeaderAccount | null }) {
           aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
         >
-          <span aria-hidden="true">{open ? '✕' : '☰'}</span>
+          {/* Drawn as SVG, not the ☰/✕ characters, which differ between Android fonts. */}
+          <svg
+            className={styles.menuIcon}
+            viewBox="0 0 20 20"
+            width="20"
+            height="20"
+            aria-hidden="true"
+            focusable="false"
+          >
+            {open ? <path d="M5 5l10 10M15 5L5 15" /> : <path d="M3 5.5h14M3 10h14M3 14.5h14" />}
+          </svg>
           <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
         </button>
       </div>

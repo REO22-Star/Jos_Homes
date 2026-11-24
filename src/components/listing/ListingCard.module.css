@@ -121,7 +121,8 @@
   font-size: 0.85rem;
 }
 
-/* Wide list: a right-hand column of rent, total, then the stamp at the foot.
+/* Wide list: a right-hand column of rent, total, then the stamp directly
+   beneath, so the price and its confirmation date read as one block.
    A container query, so rows also fit beside the search filters. */
 @container (min-width: 700px) {
   .row {
@@ -132,7 +133,7 @@
   .money {
     grid-column: auto;
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
+    align-content: start;
     grid-template-areas:
       'rent'
       'total'
@@ -147,7 +148,6 @@
     font-size: 0.9rem;
   }
   .stamp {
-    align-self: end;
     margin-top: var(--space-3);
   }
 }

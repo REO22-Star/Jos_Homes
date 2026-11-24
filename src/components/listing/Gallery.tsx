@@ -73,7 +73,12 @@ export function Gallery({
                   setSwitched(true);
                 }}
               >
-                <MediaImage media={{ ...m, alt: '' }} ratio="1 / 1" sampleLabel={false} />
+                <MediaImage
+                  media={{ ...m, alt: '' }}
+                  ratio="1 / 1"
+                  sizes="96px"
+                  sampleLabel={false}
+                />
               </button>
             </li>
           ))}

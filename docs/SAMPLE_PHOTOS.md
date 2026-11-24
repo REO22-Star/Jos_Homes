@@ -5,6 +5,11 @@ photos of real properties (decision D-045). They live in `public/sample-photos`,
 are resized to at most 1000 px and stripped of metadata, and are always shown with
 a "Sample photo" label.
 
+Each photo also has a copy at 40% size in `public/sample-photos/small`, which
+listing rows and gallery thumbnails use on phones. After adding or replacing a
+photo, run `node scripts/make-sample-thumbs.mjs`; a unit test fails if a copy is
+missing.
+
 ## Licences
 
 - **Pexels License**: free to use and modify, including commercially; attribution
